@@ -8,3 +8,5 @@ const NewPassword = () => {
 }
 
 export default NewPassword;
+
+// developer vladzyabs
