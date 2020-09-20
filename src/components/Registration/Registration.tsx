@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Registration.module.css';
 
 const Registration = () => {
-  //1
+  //2
   return (
     <div>Example</div>
   )
