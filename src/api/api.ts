@@ -1,33 +1,70 @@
 import axios from 'axios'
 
 
-const settings = {
-   withCredentials: true,
-   headers: {
-      'token': '3579de60-32da-11ea-b98b-2dd305a3a42a',
-   },
-}
 const instance = axios.create({
-   // baseURL: 'http://localhost:7542/2.0/',
-   baseURL: 'https://neko-back.herokuapp.com/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
+    //baseURL: 'https://neko-back.herokuapp.com/2.0/',
 })
 
 
 export const authAPI = {
-   login(data: LoginParamsType) {
-      return instance.post<any>('auth/login', {data})
-   },
-   forgot(data: { email: string, from: string, message: string }) {
-      return instance.post<{ answer: boolean, html: boolean, info: string, success: boolean }>('auth/forgot', data)
-   },
-    sendNewPassword(data: { password: string, resetPasswordToken: string }) {
-      return instance.post<any>('auth/set-new-password', data)
-   },
+    login(data: LoginParamsType) {
+        return instance.post<LoginResponseType>('auth/login', data)
+    },
+    forgot(data: ForgotParamsType) {
+        return instance.post<ForgotResponseType>('auth/forgot', data)
+    },
+    sendNewPassword(data: NewPasswordParamsType) {
+        return instance.post<any>('auth/set-new-password', data)
+    },
 }
 
 
 export type LoginParamsType = {
-   password: string,
-   email: string,
-   rememberMe: boolean
+    password: string,
+    email: string,
+    rememberMe: boolean
 }
+
+export type LoginResponseType = {
+    avatar: string
+    created: string
+    email: string
+    isAdmin: boolean
+    name: string
+    publicCardPacksCount: number
+    rememberMe: boolean
+    token: string
+    tokenDeathTime: number
+    updated: string
+    verified: boolean
+    __v: number
+    _id: string
+}
+
+export type LoginResponseErrorType = {
+    body: LoginParamsType
+    error: string
+    method: string
+    query: {}
+    url: string
+}
+
+export type ForgotParamsType = {
+    email: string
+    from: string
+    message: string
+}
+
+export type ForgotResponseType = {
+    answer: boolean
+    html: boolean
+    info: string
+    success: boolean
+}
+
+export type NewPasswordParamsType = {
+    password: string
+    resetPasswordToken: string
+}
+

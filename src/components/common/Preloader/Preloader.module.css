@@ -1,0 +1,19 @@
+.wrapper {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #fff;
+	overflow: hidden;
+	z-index: 40;
+}
+
+.img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -49px;
+	margin-top: -49px;
+	z-index: 40;
+}

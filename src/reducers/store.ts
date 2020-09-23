@@ -5,6 +5,7 @@ import {newPswReducer} from "./newPassword-reducer";
 import {restorePswReducer} from "./restorePassword-reducer";
 import {profileReducer} from "./profile-reducer";
 import {registrationReducer} from "./registration";
+import {requestReducer} from "./request-reducer";
 
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     newPsw: newPswReducer,
     restorePsw: restorePswReducer,
     profile: profileReducer,
-    registration: registrationReducer
+    registration: registrationReducer,
+    request: requestReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
