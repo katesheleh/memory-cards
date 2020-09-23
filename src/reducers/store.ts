@@ -4,7 +4,7 @@ import {loginReducer} from "./login-reducer";
 import {newPswReducer} from "./newPassword-reducer";
 import {restorePswReducer} from "./restorePassword-reducer";
 import {profileReducer} from "./profile-reducer";
-import {registrationReducer} from "./registration";
+import {registrationReducer} from "./registration-reducer";
 import {requestReducer} from "./request-reducer";
 
 
