@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react'
-import classes from './NewPassword.module.css'
+import classes from '../NewPassword/NewPassword.module.css'
 import {useDispatch, useSelector} from 'react-redux'
 import {getEmailConfirmation} from '../../reducers/restorePassword-reducer'
 import {AppRootStateType} from '../../reducers/store'
