@@ -3,7 +3,9 @@ import styles from './Profile.module.css';
 
 const Profile = () => {
   return (
-    <div>Example</div>
+    <div>
+      <h1>Profile</h1>
+    </div>
   )
 }
 

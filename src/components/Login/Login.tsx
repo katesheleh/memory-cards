@@ -5,9 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {loginTC} from "../../reducers/login-reducer";
 import {PROFILE} from "../../route";
+import Preloader from "../common/Preloader/Preloader";
 
 const Login = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
+    const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
+    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
     const dispatch = useDispatch();
 
     const [email, setEmail] = useState("nya-admin@nya.nya")
@@ -36,6 +39,8 @@ const Login = () => {
 
     return (
         <div>
+            {requestIsFetching && <Preloader/>}
+            {errorMsg && <p><strong>{errorMsg}</strong></p>}
             <input type="text" value={email} onChange={onEmailChange}/>
             <input type="text" value={password} onChange={onPasswordChange}/>
             <input type="checkbox" checked={rememberMe} onChange={onCheckboxChange}/>
