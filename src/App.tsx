@@ -7,6 +7,7 @@ import Login from "./components/Login/Login";
 import NewPassword from "./components/NewPassword/NewPassword";
 import Profile from "./components/Profile/Profile";
 import Registration from "./components/Registration/Registration";
+import RestorePassword from './components/RestorePassword/RestorePassword'
 
 function App() {
     return (
@@ -15,7 +16,7 @@ function App() {
             <Route path={NEW_PASSWORD} render={() => <NewPassword/>}/>
             <Route path={PROFILE} render={() => <Profile/>}/>
             <Route path={REGISTRATION} render={() => <Registration/>}/>
-            {/*<Route path={RESTORE_PASSWORD} render={() => </>}/>*/}
+            <Route path={RESTORE_PASSWORD} render={() => <RestorePassword/>}/>
         </div>
     );
 }
