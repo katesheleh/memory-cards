@@ -86,5 +86,13 @@ export type NewPasswordParamsType = {
 export type RegistrationParamsType = {
     email: string
     password: string
+    repeatPassword?: string
+}
+
+export type FormErrorType = {
+    email?: string
+    password?: string
+    repeatPassword?: string
+    rememberMe?: boolean
 }
 

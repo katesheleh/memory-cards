@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React from 'react';
 import styles from './Registration.module.css';
 import {Redirect} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
@@ -6,49 +6,88 @@ import {AppRootStateType} from "../../reducers/store";
 import {LOGIN} from "../../route";
 import Preloader from "../common/Preloader/Preloader";
 import {registrationTC} from "../../reducers/registration-reducer";
+import {useFormik} from "formik";
+import {FormErrorType, RegistrationParamsType} from "../../api/api";
+
+const validate = (values: RegistrationParamsType) => {
+    const errors: FormErrorType = {};
+
+    if (!values.email) {
+        errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+    }
+
+    if (!values.password) {
+        errors.password = 'Required';
+    } else if (values.password.length < 8) {
+        errors.password = 'Must be more than 8 characters';
+    }
+
+    if (!values.repeatPassword) {
+        errors.repeatPassword = 'Required';
+    } else if (values.repeatPassword.length < 8) {
+        errors.repeatPassword = 'Must be more than 8 characters';
+    } else if (values.repeatPassword !== values.password) {
+        errors.repeatPassword = 'Incorrect repeated password';
+    }
+
+    return errors;
+};
+
 
 const Registration = () => {
-  const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
-  const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
-  const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
-  const dispatch = useDispatch();
+    const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
+    const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
+    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
+    const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [repeatedPassword, setRepeatedPassword] = useState("")
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            repeatPassword: ''
+        },
+        validate,
+        onSubmit: values => {
+            const payload = {
+                email: values.email,
+                password: values.password
+            }
+            dispatch(registrationTC(payload))
+        },
+    });
 
-  const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.currentTarget.value)
-  }, [email])
+    if (isRegistered) {
+        return <Redirect to={LOGIN}/>
+    }
 
-  const onPasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value)
-  }, [password])
+    return (
+        <form onSubmit={formik.handleSubmit}>
 
-  const onRepeatedPasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setRepeatedPassword(e.currentTarget.value)
-  }, [repeatedPassword])
+            {requestIsFetching && <Preloader/>}
+            {errorMsg && <p><strong>{errorMsg}</strong></p>}
 
-
-  const onSubmit = () => {
-    dispatch(registrationTC({email, password}))
-  }
-
-  if (isRegistered) {
-    return <Redirect to={LOGIN}/>
-  }
-
-  return (
-      <div>
-        {requestIsFetching && <Preloader/>}
-        {errorMsg && <p><strong>{errorMsg}</strong></p>}
-        <input type="text" value={email} onChange={onEmailChange}/>
-        <input type="text" value={password} onChange={onPasswordChange}/>
-        <input type="text" value={repeatedPassword} onChange={onRepeatedPasswordChange}/>
-        <button type="submit" onClick={onSubmit} disabled={password !== repeatedPassword}>Registration</button>
-        <a href={'memory-cards#/login'}>Sign in</a>
-      </div>
-  )
-}
+            <label htmlFor="email">Email Address</label>
+            <input
+                {...formik.getFieldProps('email')}
+            />
+            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+            <label htmlFor="password">Password</label>
+            <input
+                type='password'
+                {...formik.getFieldProps('password')}
+            />
+            {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+            <label htmlFor="password">Repeat Password</label>
+            <input
+                type='password'
+                {...formik.getFieldProps('repeatPassword')}
+            />
+            {formik.errors.repeatPassword ? <div>{formik.errors.repeatPassword}</div> : null}
+            <button type="submit" disabled={formik.values.password !== formik.values.repeatPassword}>Submit</button>
+        </form>
+    );
+};
 
 export default Registration;
