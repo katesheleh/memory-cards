@@ -17,6 +17,9 @@ export const authAPI = {
     sendNewPassword(data: NewPasswordParamsType) {
         return instance.post<any>('auth/set-new-password', data)
     },
+    registration(data: RegistrationParamsType) {
+        return instance.post<RegistrationResponseType>('auth/register', data)
+    },
 }
 
 
@@ -40,6 +43,18 @@ export type LoginResponseType = {
     verified: boolean
     __v: number
     _id: string
+}
+
+export type AddedUserType = {
+    email: string,
+    isAdmin: boolean,
+    __v: number,
+    _id: string
+}
+
+export type RegistrationResponseType = {
+    addedUser: AddedUserType,
+    success: boolean
 }
 
 export type LoginResponseErrorType = {
@@ -66,5 +81,10 @@ export type ForgotResponseType = {
 export type NewPasswordParamsType = {
     password: string
     resetPasswordToken: string
+}
+
+export type RegistrationParamsType = {
+    email: string
+    password: string
 }
 
