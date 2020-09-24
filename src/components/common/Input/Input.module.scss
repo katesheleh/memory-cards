@@ -1,0 +1,30 @@
+@import '../../../styles/variable';
+
+.label {
+
+  span {
+    font-size: 18px;
+    margin-right: 18px;
+    color: $color-text-primary;
+  }
+
+  .input {
+    outline: none;
+    border: 1px solid #e8e8e8;
+    padding: 5px 15px;
+    transition: .2s;
+    width: 100%;
+    max-width: 250px;
+    height: 30px;
+    color: $color-text-primary;
+    font-size: 16px;
+
+    &:hover, &:focus {
+      border: 1px solid $color-accent;
+    }
+
+    &::placeholder {
+      color: $color-gray-light;
+    }
+  }
+}
