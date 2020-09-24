@@ -1,6 +1,8 @@
 import {Dispatch} from "redux";
 import {authAPI, LoginParamsType} from "../api/api";
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
+import {getUserDataAC} from "./profile-reducer";
+import {setCookie} from "../utils/cookies";
 
 const initialState: InitialStateType = {
     isLoggedIn: false
@@ -21,13 +23,15 @@ export const setIsLoggedInAC = (value: boolean) => ({type: 'LOGIN', value} as co
 
 
 // thunks
-export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType | any>) => {
     dispatch(isFetchingAC(true))
     authAPI.login(data)
         .then(res => {
             dispatch(isFetchingAC(false))
             if (res.status === 200) {
                 dispatch(setIsLoggedInAC(true))
+                dispatch(getUserDataAC(res.data))
+                setCookie('user_id', res.data._id)
             } else {
                 dispatch(errorAC('Oops...Something went wrong. Please try again later'))
                 dispatch(setIsLoggedInAC(false))
