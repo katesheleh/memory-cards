@@ -1,11 +1,30 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React from 'react';
 import styles from './Login.module.css';
 import {Redirect} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {loginTC} from "../../reducers/login-reducer";
-import {PROFILE} from "../../route";
+import {LOGIN, PROFILE} from "../../route";
 import Preloader from "../common/Preloader/Preloader";
+import {useFormik} from "formik";
+import {FormErrorType, LoginParamsType} from "../../api/api";
+
+const validate = (values: LoginParamsType) => {
+    const errors: FormErrorType = {};
+
+    if (!values.email) {
+        errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+    }
+
+    if (!values.password) {
+        errors.password = 'Required';
+    } else if (values.password.length < 8) {
+        errors.password = 'Must be more than 8 characters';
+    }
+    return errors;
+};
 
 const Login = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
@@ -13,40 +32,47 @@ const Login = () => {
     const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
     const dispatch = useDispatch();
 
-    const [email, setEmail] = useState("nya-admin@nya.nya")
-    const [password, setPassword] = useState("1qazxcvBG")
-    const [rememberMe, setRememberMe] = useState<boolean>(false)
-
-    const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.currentTarget.value)
-    }, [email])
-
-    const onPasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.currentTarget.value)
-    }, [password])
-
-    const onCheckboxChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setRememberMe(e.currentTarget.checked)
-    }, [rememberMe])
-
-    const onSubmit = () => {
-        dispatch(loginTC({email, password, rememberMe}))
-    }
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            rememberMe: false
+        },
+        validate,
+        onSubmit: (values: LoginParamsType) => {
+            dispatch(loginTC(values))
+        },
+    });
 
     if (isLoggedIn) {
         return <Redirect to={PROFILE}/>
     }
 
     return (
-        <div>
+        <form onSubmit={formik.handleSubmit}>
+
             {requestIsFetching && <Preloader/>}
             {errorMsg && <p><strong>{errorMsg}</strong></p>}
-            <input type="text" value={email} onChange={onEmailChange}/>
-            <input type="text" value={password} onChange={onPasswordChange}/>
-            <input type="checkbox" checked={rememberMe} onChange={onCheckboxChange}/>
-            <button type="submit" onClick={onSubmit}>Login</button>
-        </div>
-    )
-}
+
+            <label htmlFor="email">Email Address</label>
+            <input
+                {...formik.getFieldProps('email')}
+            />
+            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+            <label htmlFor="password">Password</label>
+            <input
+                type='password'
+                {...formik.getFieldProps('password')}
+            />
+            {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+            <label htmlFor="password">remember me</label>
+            <input
+                type='checkbox'
+                {...formik.getFieldProps('rememberMe')}
+            />
+            <button type="submit">Submit</button>
+        </form>
+    );
+};
 
 export default Login;
