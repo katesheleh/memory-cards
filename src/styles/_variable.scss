@@ -1,6 +1,15 @@
+//colors
 $color-accent: #499c35;
 $color-title: #232323;
 $color-text-subtitle: #464646;
 $color-text-primary: #111;
 $color-text-secondary: #fff;
 $color-gray-light: #949494;
+
+//fonts
+%poppins-bold {
+  font-family: 'Poppins', sans-serif;
+}
+%open-sans {
+  font-family: 'Open Sans', sans-serif;
+}
