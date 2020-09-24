@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux'
 import {authAPI} from '../api/api'
+import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from './request-reducer'
 
 const SET_CONFIRMING = 'SET_CONFIRMING'
 const SET_SELECTED_EMAIL = 'SET_SELECTED_EMAIL'
@@ -45,7 +46,7 @@ type SetSelectedEmail = ReturnType<typeof setSelectedEmail>
 // thunks
 
 export const getEmailConfirmation = (email: string) =>
-   async (dispatch: ThunkDispatchType) => {
+   (dispatch: ThunkDispatchType) => {
       const message = `
          <div style="background-color: lime; padding: 15px">	
             password recovery link:
@@ -53,20 +54,24 @@ export const getEmailConfirmation = (email: string) =>
             link</a>
          </div>
       `
-      const res = await authAPI.forgot({
+      dispatch(isFetchingAC(true))
+      authAPI.forgot({
          email, // кому восстанавливать пароль
          from: '<vladzyaba@mail.ru>', // можно указать разработчика фронта)
          message: message,
+      }).then(res => {
+            if (res.data.success) {
+               dispatch(setConfirming(res.data.success))
+               dispatch(setSelectedEmail(email))
+            } else if (res.data.success) {
+               dispatch(errorAC('Oops...Something went wrong. Please try again later'))
+            }
+         },
+      ).catch(error => {
+         dispatch(errorAC(error.message))
+      }).finally(() => {
+         dispatch(isFetchingAC(false))
       })
-      try {
-         console.log(res)
-         if (res.data.success) {
-            dispatch(setConfirming(res.data.success))
-            dispatch(setSelectedEmail(email))
-         }
-      } catch (error) {
-         throw error
-      }
    }
 
 // TYPES
@@ -74,4 +79,5 @@ export const getEmailConfirmation = (email: string) =>
 type ActionsType
    = SetConfirmingActionType
    | SetSelectedEmail
-type ThunkDispatchType = Dispatch<ActionsType>
+
+type ThunkDispatchType = Dispatch<ActionsType | isFetchingACType | ErrorACType>
