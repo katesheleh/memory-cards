@@ -2,7 +2,7 @@ const initialState: Array<InitialStateType> = []
 
 export const profileReducer = (state: Array<InitialStateType> = initialState, action: ActionsType) => {
     switch (action.type) {
-        case 'EXAMPLE':
+        case 'GET_USER_DATA':
             return [...state]
 
         default:
@@ -10,7 +10,7 @@ export const profileReducer = (state: Array<InitialStateType> = initialState, ac
     }
 }
 
-export const exampleAC = (arrayData: InitialStateType[]) => ({type: 'EXAMPLE', arrayData} as const)
+export const exampleAC = (arrayData: InitialStateType[]) => ({type: 'GET_USER_DATA', arrayData} as const)
 
 // TYPES
 export type InitialStateType = {}

@@ -11,6 +11,9 @@ export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<LoginResponseType>('auth/login', data)
     },
+    me({}) {
+        return instance.post<LoginResponseType>('auth/me', {})
+    },
     forgot(data: ForgotParamsType) {
         return instance.post<ForgotResponseType>('auth/forgot', data)
     },
