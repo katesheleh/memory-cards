@@ -25,7 +25,6 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
     dispatch(isFetchingAC(true))
     authAPI.login(data)
         .then(res => {
-            debugger
             dispatch(isFetchingAC(false))
             if (res.status === 200) {
                 dispatch(setIsLoggedInAC(true))
@@ -35,7 +34,7 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
             }
         })
         .catch((error) => {
-            dispatch(errorAC(error.message))
+            dispatch(errorAC(error.response.data.error))
             dispatch(isFetchingAC(false))
         })
 }
