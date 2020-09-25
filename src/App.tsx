@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {Route} from 'react-router-dom';
 import {LOGIN, NEW_PASSWORD, PROFILE, REGISTRATION, RESTORE_PASSWORD} from "./route";
@@ -8,15 +7,19 @@ import NewPassword from "./components/NewPassword/NewPassword";
 import Profile from "./components/Profile/Profile";
 import Registration from "./components/Registration/Registration";
 import RestorePassword from './components/RestorePassword/RestorePassword'
+import Header from './components/Header/Header'
 
 function App() {
     return (
         <div className="App">
-            <Route path={LOGIN} render={() => <Login/>}/>
-            <Route path={NEW_PASSWORD} render={() => <NewPassword/>}/>
-            <Route path={PROFILE} render={() => <Profile/>}/>
-            <Route path={REGISTRATION} render={() => <Registration/>}/>
-            <Route path={RESTORE_PASSWORD} render={() => <RestorePassword/>}/>
+           <Header/>
+           <div className="content">
+              <Route path={LOGIN} render={() => <Login/>}/>
+              <Route path={NEW_PASSWORD} render={() => <NewPassword/>}/>
+              <Route path={PROFILE} render={() => <Profile/>}/>
+              <Route path={REGISTRATION} render={() => <Registration/>}/>
+              <Route path={RESTORE_PASSWORD} render={() => <RestorePassword/>}/>
+           </div>
         </div>
     );
 }

@@ -13,3 +13,9 @@ $color-gray-light: #949494;
 %open-sans {
   font-family: 'Open Sans', sans-serif;
 }
+%container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
