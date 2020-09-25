@@ -57,7 +57,7 @@ export const getEmailConfirmation = (email: string) =>
       dispatch(isFetchingAC(true))
       authAPI.forgot({
          email, // кому восстанавливать пароль
-         from: '<vladzyaba@mail.ru>', // можно указать разработчика фронта)
+         from: `<${email}>`, // можно указать разработчика фронта)
          message: message,
       }).then(res => {
             if (res.data.success) {

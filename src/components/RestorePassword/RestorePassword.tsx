@@ -38,7 +38,7 @@ const RestorePassword = () => {
    })
 
    return (
-      <div className={classes.wrapper}>
+      <div className={classes.container}>
          <h1>Restore password</h1>
          {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
