@@ -1,0 +1,28 @@
+@import "../../styles/variable";
+
+.header {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: $color-accent;
+  min-height: 50px;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, .6);
+  display: flex;
+  align-items: center;
+
+  .container {
+    @extend %container;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  nav {
+    a {
+      margin-right: 10px;
+    }
+  }
+}

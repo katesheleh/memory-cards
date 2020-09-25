@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux'
 import {authAPI} from '../api/api'
+import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from './request-reducer'
 
 const SET_RESULT = 'SET_RESULT'
 
@@ -32,24 +33,27 @@ type SetResultActionType = ReturnType<typeof setResult>
 // thunks
 
 export const setNewPassword = (password: string, token: string) =>
-   async (dispatch: ThunkDispatchType) => {
-      const res = await authAPI.sendNewPassword({
+   (dispatch: ThunkDispatchType) => {
+      dispatch(isFetchingAC(true))
+      authAPI.sendNewPassword({
          password,
          resetPasswordToken: token,
-      })
-      try {
+      }).then(res => {
          if (res.status === 200) {
             dispatch(setResult(true))
          } else {
             dispatch(setResult(false))
+            dispatch(errorAC('Oops...Something went wrong. Please try again later'))
          }
-      } catch (error) {
+      }).catch(error => {
          dispatch(setResult(false))
-         throw error
-      }
+         dispatch(errorAC(error.message))
+      }).finally(() => {
+         dispatch(isFetchingAC(false))
+      })
    }
 
 // TYPES
 
 type ActionsType = SetResultActionType
-type ThunkDispatchType = Dispatch<ActionsType>
+type ThunkDispatchType = Dispatch<ActionsType | isFetchingACType | ErrorACType>

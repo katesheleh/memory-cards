@@ -10,7 +10,7 @@ const Input = (props: InputPropsType) => {
    const type = props.type === 'password' ? 'password' : 'text'
    return (
       <label className={classes.label}>
-         {props.labelTitle && <span className={classes.label}>{labelTitle}</span>}
+         {labelTitle && <span className={classes.label}>{labelTitle}</span>}
          <input {...restProps} type={type} className={`${classes.input} ${props.className}`}/>
       </label>
    )
