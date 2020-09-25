@@ -1,7 +1,7 @@
 import {authAPI, LoginResponseType} from "../api/api";
 import {Dispatch} from "redux";
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
-import {getCookie} from "../utils/cookies";
+import {setIsLoggedInAC} from "./login-reducer";
 
 let initialState: InitialStateType = {
     success: false,
@@ -37,12 +37,13 @@ export const authSucessAC = (success: boolean) => ({type: 'AUTH_SUCCESS', succes
 // THUNK
 export const getUserDataTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType | authSucessACType>) => {
     dispatch(isFetchingAC(true))
-    authAPI.me()
+    authAPI.authMe()
         .then(res => {
+            if(setIsLoggedInAC(true)) {
+                dispatch(getUserDataAC(res.data))
+            }
             dispatch(isFetchingAC(false))
-            dispatch(getUserDataAC(res.data))
             dispatch(authSucessAC(true))
-            const cookie = getCookie('user_id')
 
         })
         .catch((error) => {
