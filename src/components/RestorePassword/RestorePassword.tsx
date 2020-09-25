@@ -6,6 +6,8 @@ import {AppRootStateType} from '../../reducers/store'
 import {useFormik} from 'formik'
 import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
+import Button from '../common/Button/Button'
+import Icons from '../common/Icons/Icons'
 
 const validate = (values: {email: string}) => {
    const errors = {} as any
@@ -40,19 +42,25 @@ const RestorePassword = () => {
    return (
       <div className={classes.container}>
          <h1>Restore password</h1>
+
          {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
-         {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+
          {
             success &&
-            <div style={{color: 'green'}}>
+            <div style={{color: 'green', marginBottom: '10px'}}>
                 Check your email: <a href={`mailto:${selectedEmail}`}>{selectedEmail}</a>
                 and follow the link in there
             </div>
          }
          <form onSubmit={formik.handleSubmit}>
-            <Input labelTitle={'Email:'} {...formik.getFieldProps('email')}/>
-            <button type="submit">send</button>
+            <div className={classes.inputWrapper}>
+               <Input labelTitle={'Email:'} {...formik.getFieldProps('email')}/>
+               {formik.errors.email ?
+                  <div className={classes.errorMsg}>{formik.errors.email} {Icons.error()}</div> : null}
+            </div>
+
+            <Button type="submit" labelTitle={'send'} disabled={!!formik.errors.email}/>
          </form>
       </div>
    )
