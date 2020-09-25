@@ -1,50 +1,43 @@
-import {authAPI, LoginResponseType} from "../api/api";
+import {authAPI} from "../api/api";
 import {Dispatch} from "redux";
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
-import {setIsLoggedInAC} from "./login-reducer";
+
 
 let initialState: InitialStateType = {
-    success: false,
-    profile: {
-        _id: '',
-        email: '',
-        name: '',
-        avatar: '',
-        publicCardPacksCount: 0,
-        created: '',
-        updated: '',
-        isAdmin: false,
-        verified: false,
-        rememberMe: false,
-        error: '',
-    }
+    success: false
 }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ActionsType) => {
     switch (action.type) {
-        case 'GET_USER_DATA':
-            return {...state, profile: action.profile}
-        case 'AUTH_SUCCESS':
+        case 'AUTH_ME':
             return {...state, success: action.success}
         default:
             return state;
     }
 }
 
-export const getUserDataAC = (profile: LoginResponseType) => ({type: 'GET_USER_DATA', profile} as const)
-export const authSucessAC = (success: boolean) => ({type: 'AUTH_SUCCESS', success} as const)
+export const authMeAC = (success: boolean) => ({type: 'AUTH_ME', success} as const)
 
 // THUNK
-export const getUserDataTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType | authSucessACType>) => {
+export const authSucessTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType | authSucessACType>) => {
     dispatch(isFetchingAC(true))
     authAPI.authMe()
         .then(res => {
-            if(setIsLoggedInAC(true)) {
-                dispatch(getUserDataAC(res.data))
-            }
             dispatch(isFetchingAC(false))
-            dispatch(authSucessAC(true))
+            dispatch(authMeAC(true))
+        })
+        .catch((error) => {
+            dispatch(errorAC(error.response.data.error))
+            dispatch(isFetchingAC(false))
+        })
+}
 
+export const logoutTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType | authSucessACType>) => {
+    dispatch(isFetchingAC(true))
+    authAPI.logout()
+        .then(res => {
+            dispatch(isFetchingAC(false))
+            dispatch(authMeAC(false))
         })
         .catch((error) => {
             dispatch(errorAC(error.response.data.error))
@@ -55,10 +48,9 @@ export const getUserDataTC = () => (dispatch: Dispatch<ActionsType | isFetchingA
 // TYPES
 export type InitialStateType = {
     success: boolean
-    profile: LoginResponseType
 }
 
-export type ActionsType = getUserDataACType | authSucessACType
+export type ActionsType = authSucessACType
 
-export type getUserDataACType = ReturnType<typeof getUserDataAC>
-export type authSucessACType = ReturnType<typeof authSucessAC>
+
+export type authSucessACType = ReturnType<typeof authMeAC>
