@@ -12,7 +12,6 @@ const Profile = () => {
 
     const userData = useSelector<AppRootStateType, LoginResponseType>(state => state.profile.profile)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
-    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
     const dispatch = useDispatch()
 
     const setLogOut = () => {
@@ -20,7 +19,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        dispatch(getUserDataTC())
+        //dispatch(getUserDataTC())
     }, [])
 
 
