@@ -8,6 +8,8 @@ import Preloader from "../common/Preloader/Preloader";
 import {registrationTC} from "../../reducers/registration-reducer";
 import {useFormik} from "formik";
 import {FormErrorType, RegistrationParamsType} from "../../api/api";
+import Input from "../common/Input/Input";
+import Button from "../common/Button/Button";
 
 const validate = (values: RegistrationParamsType) => {
     const errors: FormErrorType = {};
@@ -63,30 +65,40 @@ const Registration = () => {
     }
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <div className={styles.registration}>
+            <h1>Registration</h1>
+            <form onSubmit={formik.handleSubmit}>
 
-            {requestIsFetching && <Preloader/>}
-            {errorMsg && <p><strong>{errorMsg}</strong></p>}
-
-            <label htmlFor="email">Email Address</label>
-            <input
-                {...formik.getFieldProps('email')}
-            />
-            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-            <label htmlFor="password">Password</label>
-            <input
-                type='password'
-                {...formik.getFieldProps('password')}
-            />
-            {formik.errors.password ? <div>{formik.errors.password}</div> : null}
-            <label htmlFor="password">Repeat Password</label>
-            <input
-                type='password'
-                {...formik.getFieldProps('repeatPassword')}
-            />
-            {formik.errors.repeatPassword ? <div>{formik.errors.repeatPassword}</div> : null}
-            <button type="submit" disabled={formik.values.password !== formik.values.repeatPassword}>Submit</button>
-        </form>
+                {requestIsFetching && <Preloader/>}
+                {errorMsg && <p><strong>{errorMsg}</strong></p>}
+                <br/>
+                <Input
+                    labelTitle={'Email Address:'}
+                    {...formik.getFieldProps('email')}
+                />
+                {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                <br/>
+                <Input
+                    labelTitle={'Password:'}
+                    type='password'
+                    {...formik.getFieldProps('password')}
+                />
+                {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+                <br/>
+                <Input
+                    labelTitle={'Repeat Password:'}
+                    type='password'
+                    {...formik.getFieldProps('repeatPassword')}
+                />
+                {formik.errors.repeatPassword ? <div>{formik.errors.repeatPassword}</div> : null}
+                <br/>
+                <Button
+                    labelTitle={'Submit'}
+                    type="submit"
+                    disabled={formik.values.password !== formik.values.repeatPassword}
+                />
+            </form>
+        </div>
     );
 };
 
