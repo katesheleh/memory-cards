@@ -1,32 +1,27 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './Profile.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {LoginResponseType} from "../../api/api";
-import {getUserDataTC} from "../../reducers/profile-reducer";
 import {LOGIN, PROFILE} from "../../route";
 import {Redirect} from "react-router-dom";
 import {setIsLoggedInAC} from "../../reducers/login-reducer";
+import {logoutTC} from "../../reducers/profile-reducer";
 
 const Profile = () => {
 
-    const userData = useSelector<AppRootStateType, LoginResponseType>(state => state.profile.profile)
+    const userData = useSelector<AppRootStateType, LoginResponseType>(state => state.login.profile)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
     const dispatch = useDispatch()
 
     const setLogOut = () => {
+        dispatch(logoutTC())
         dispatch(setIsLoggedInAC(false))
     }
-
-    useEffect(() => {
-        //dispatch(getUserDataTC())
-    }, [])
-
 
     if (!isLoggedIn) {
         return <Redirect to={LOGIN}/>
     }
-
 
     return (
         <div>
