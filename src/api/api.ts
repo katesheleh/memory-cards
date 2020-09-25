@@ -11,6 +11,9 @@ export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<LoginResponseType>('auth/login', data)
     },
+    me() {
+        return instance.post<LoginResponseType>('auth/me')
+    },
     forgot(data: ForgotParamsType) {
         return instance.post<ForgotResponseType>('auth/forgot', data)
     },
@@ -30,19 +33,19 @@ export type LoginParamsType = {
 }
 
 export type LoginResponseType = {
-    avatar: string
-    created: string
-    email: string
-    isAdmin: boolean
-    name: string
-    publicCardPacksCount: number
-    rememberMe: boolean
-    token: string
-    tokenDeathTime: number
-    updated: string
-    verified: boolean
-    __v: number
     _id: string
+    email: string
+    name: string
+    avatar?: string
+    publicCardPacksCount: number // количество колод
+
+    created: string
+    updated: string
+    isAdmin: boolean;
+    verified: boolean; // подтвердил ли почту
+    rememberMe: boolean;
+
+    error: string;
 }
 
 export type AddedUserType = {

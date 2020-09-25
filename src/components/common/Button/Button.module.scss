@@ -1,0 +1,26 @@
+@import '../../../styles/variable';
+
+.btn {
+  width: 100%;
+  max-width: 150px;
+  color: $color-text-secondary;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: $color-accent;
+  text-transform: uppercase;
+  height: 40px;
+  border: 1px solid $color-accent;
+  transition: .2s;
+  outline: none;
+
+  &:hover {
+    border: 1px solid $color-accent;
+    background-color: #fff;
+    color: $color-text-primary;
+  }
+
+  &:disabled {
+    opacity: .5
+  }
+}
+

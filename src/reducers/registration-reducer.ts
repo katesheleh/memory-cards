@@ -24,7 +24,6 @@ export const registrationTC = (data: RegistrationParamsType) => (dispatch: Dispa
     dispatch(isFetchingAC(true))
     authAPI.registration(data)
         .then(res => {
-            debugger
             dispatch(isFetchingAC(false))
             if (res.status === 201) {
                 dispatch(registrationAC(true))
@@ -33,7 +32,6 @@ export const registrationTC = (data: RegistrationParamsType) => (dispatch: Dispa
             }
         })
         .catch((error) => {
-            debugger
             dispatch(errorAC(error.message))
             dispatch(isFetchingAC(false))
         })
