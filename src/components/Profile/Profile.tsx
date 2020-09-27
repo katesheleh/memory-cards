@@ -2,11 +2,12 @@ import React from 'react';
 import styles from './Profile.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
-import {LoginResponseType} from "../../api/api";
+import {LoginResponseType} from "../../api/auth-api";
 import {LOGIN, PROFILE} from "../../route";
 import {Redirect} from "react-router-dom";
 import {setIsLoggedInAC} from "../../reducers/login-reducer";
 import {logoutTC} from "../../reducers/profile-reducer";
+import Table from "../Table/Table";
 
 const Profile = () => {
 
@@ -31,6 +32,7 @@ const Profile = () => {
             <p>publicCardPacksCount: {userData.publicCardPacksCount}</p>
             <div><img src={userData.avatar} alt={userData.name} width={200}/></div>
             <button onClick={setLogOut}>LogOut</button>
+            <Table/>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import {authAPI, RegistrationParamsType} from "../api/api";
+import {authAPI, RegistrationParamsType} from "../api/auth-api";
 import {Dispatch} from "redux";
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
 

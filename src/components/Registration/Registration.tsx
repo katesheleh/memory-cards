@@ -7,7 +7,7 @@ import {LOGIN} from "../../route";
 import Preloader from "../common/Preloader/Preloader";
 import {registrationTC} from "../../reducers/registration-reducer";
 import {useFormik} from "formik";
-import {FormErrorType, RegistrationParamsType} from "../../api/api";
+import {FormErrorType, RegistrationParamsType} from "../../api/auth-api";
 import Input from "../common/Input/Input";
 import Button from "../common/Button/Button";
 

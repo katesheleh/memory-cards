@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {authAPI, LoginParamsType, LoginResponseType} from "../api/api";
+import {authAPI, LoginParamsType, LoginResponseType} from "../api/auth-api";
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
 
 const initialState: InitialStateType = {

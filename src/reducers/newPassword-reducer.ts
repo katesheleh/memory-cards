@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux'
-import {authAPI} from '../api/api'
+import {authAPI} from '../api/auth-api'
 import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from './request-reducer'
 
 const SET_RESULT = 'SET_RESULT'
