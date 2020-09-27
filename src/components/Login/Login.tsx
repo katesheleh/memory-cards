@@ -7,7 +7,7 @@ import {loginTC} from "../../reducers/login-reducer";
 import {LOGIN, PROFILE, REGISTRATION, RESTORE_PASSWORD} from "../../route";
 import Preloader from "../common/Preloader/Preloader";
 import {useFormik} from "formik";
-import {FormErrorType, LoginParamsType} from "../../api/api";
+import {FormErrorType, LoginParamsType} from "../../api/auth-api";
 
 const validate = (values: LoginParamsType) => {
     const errors: FormErrorType = {};
