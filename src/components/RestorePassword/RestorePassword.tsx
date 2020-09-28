@@ -7,16 +7,12 @@ import {useFormik} from 'formik'
 import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
+import {emptyField, validateEmail} from '../../utlis/validates'
 
-const validate = (values: {email: string}) => {
+const validate = (values: { email: string }) => {
    const errors = {} as any
-
-   if (!values.email) {
-      errors.email = 'Required'
-   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
-   }
-
+   errors.email = emptyField(values.email)
+   errors.email = validateEmail(values.email)
    return errors
 }
 

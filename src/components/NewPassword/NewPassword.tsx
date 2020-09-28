@@ -10,18 +10,14 @@ import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
 import {useFormik} from 'formik'
+import {checkNumberSymbols, emptyField} from '../../utlis/validates'
 
 const validate = (values: { firstNewPassword: string, secondNewPassword: string, formError: string }) => {
    const errors = {} as any
-
-   if (!values.firstNewPassword) {
-      errors.firstNewPassword = 'Required'
-   }
-
-   if (!values.secondNewPassword) {
-      errors.secondNewPassword = 'Required'
-   }
-
+   errors.firstNewPassword = emptyField(values.firstNewPassword)
+   errors.firstNewPassword = checkNumberSymbols(values.firstNewPassword, 8)
+   errors.secondNewPassword = emptyField(values.secondNewPassword)
+   errors.secondNewPassword = checkNumberSymbols(values.secondNewPassword, 8)
    if (values.firstNewPassword !== values.secondNewPassword) {
       errors.formError = 'Password mismatch'
    }
@@ -58,7 +54,6 @@ const NewPassword = () => {
 
          {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
-         {formik.errors.formError ? <div>{formik.errors.formError}</div> : null}
 
          <form onSubmit={formik.handleSubmit}>
 
@@ -84,6 +79,7 @@ const NewPassword = () => {
                        !!formik.errors.secondNewPassword
                     }>send
             </Button>
+            {formik.errors.formError ? <div>{formik.errors.formError}</div> : null}
          </form>
       </div>
    )
