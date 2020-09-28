@@ -7,19 +7,18 @@ import {loginTC} from '../../reducers/login-reducer'
 import {PROFILE, REGISTRATION, RESTORE_PASSWORD} from '../../route'
 import Preloader from '../common/Preloader/Preloader'
 import {useFormik} from 'formik'
-import {FormErrorType, LoginParamsType} from '../../api/auth-api'
-import {emptyField, validateEmail, checkNumberSymbols} from '../../utlis/validates'
 import Input from '../common/Input/Input'
 import Button from '../common/Button/Button'
+import * as Yup from 'yup'
 
-const validate = (values: LoginParamsType) => {
-   const errors: FormErrorType = {}
-   errors.email = emptyField(values.email)
-   errors.email = validateEmail(values.email)
-   errors.password = emptyField(values.password)
-   errors.password = checkNumberSymbols(values.password, 8)
-   return errors
-}
+const validationSchema = () => Yup.object({
+   email: Yup.string()
+      .email('Invalid email address')
+      .required('Required'),
+   password: Yup.string()
+      .required('Required')
+      .min(8, 'Must be 8 characters or less'),
+})
 
 const Login = () => {
    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
@@ -33,8 +32,8 @@ const Login = () => {
          password: '',
          rememberMe: false,
       },
-      validate,
-      onSubmit: (values: LoginParamsType) => {
+      validationSchema,
+      onSubmit: values => {
          dispatch(loginTC(values))
       },
    })

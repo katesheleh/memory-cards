@@ -7,32 +7,22 @@ import {LOGIN} from '../../route'
 import Preloader from '../common/Preloader/Preloader'
 import {registrationTC} from '../../reducers/registration-reducer'
 import {useFormik} from 'formik'
-import {FormErrorType, RegistrationParamsType} from '../../api/auth-api'
 import Input from '../common/Input/Input'
 import Button from '../common/Button/Button'
-import {checkNumberSymbols, emptyField, validateEmail} from '../../utlis/validates'
+import * as Yup from 'yup'
 
-const validate = (values: RegistrationParamsType) => {
-   const errors: FormErrorType = {}
 
-   errors.email = emptyField(values.email)
-   errors.email = validateEmail(values.email)
-
-   errors.password = emptyField(values.password)
-   errors.password = checkNumberSymbols(values.password, 8)
-
-   if (values.repeatPassword) {
-      errors.repeatPassword = emptyField(values.repeatPassword)
-      errors.repeatPassword = checkNumberSymbols(values.repeatPassword, 8)
-   }
-
-   if (values.repeatPassword !== values.password) {
-      errors.repeatPassword = 'Incorrect repeated password'
-   }
-
-   return errors
-}
-
+const validationSchema = () => Yup.object({
+   email: Yup.string()
+      .email('Invalid email address')
+      .required('Required'),
+   password: Yup.string()
+      .required('Required')
+      .min(8, 'Must be 8 characters or less'),
+   repeatPassword: Yup.string()
+      .required('Required')
+      .min(8, 'Must be 8 characters or less'),
+})
 
 const Registration = () => {
    const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
@@ -46,7 +36,7 @@ const Registration = () => {
          password: '',
          repeatPassword: '',
       },
-      validate,
+      validationSchema,
       onSubmit: values => {
          const payload = {
             email: values.email,

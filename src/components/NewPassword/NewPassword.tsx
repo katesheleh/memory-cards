@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react'
+import React from 'react'
 import {useParams} from 'react-router-dom'
 import classes from './NewPassword.module.scss'
 import {useDispatch, useSelector} from 'react-redux'
@@ -10,19 +10,16 @@ import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
 import {useFormik} from 'formik'
-import {checkNumberSymbols, emptyField} from '../../utlis/validates'
+import * as Yup from 'yup'
 
-const validate = (values: { firstNewPassword: string, secondNewPassword: string, formError: string }) => {
-   const errors = {} as any
-   errors.firstNewPassword = emptyField(values.firstNewPassword)
-   errors.firstNewPassword = checkNumberSymbols(values.firstNewPassword, 8)
-   errors.secondNewPassword = emptyField(values.secondNewPassword)
-   errors.secondNewPassword = checkNumberSymbols(values.secondNewPassword, 8)
-   if (values.firstNewPassword !== values.secondNewPassword) {
-      errors.formError = 'Password mismatch'
-   }
-   return errors
-}
+const validationSchema = () => Yup.object({
+   firstNewPassword: Yup.string()
+      .required('Required')
+      .min(8, 'Must be 8 characters or less'),
+   secondNewPassword: Yup.string()
+      .required('Required')
+      .min(8, 'Must be 8 characters or less'),
+})
 
 const NewPassword = () => {
 
@@ -36,9 +33,8 @@ const NewPassword = () => {
       initialValues: {
          firstNewPassword: '',
          secondNewPassword: '',
-         formError: '',
       },
-      validate,
+      validationSchema,
       onSubmit: values => {
          dispatch(setNewPassword(values.firstNewPassword.trim(), token))
       },
@@ -74,12 +70,11 @@ const NewPassword = () => {
             <Button labelTitle={'Send'}
                     type="submit"
                     disabled={
-                       !!formik.errors.formError ||
-                       !!formik.errors.firstNewPassword ||
-                       !!formik.errors.secondNewPassword
-                    }>send
+                       formik.values.firstNewPassword !== formik.values.secondNewPassword
+                       || !!formik.errors.firstNewPassword
+                       || !!formik.errors.secondNewPassword
+                    }>Send
             </Button>
-            {formik.errors.formError ? <div>{formik.errors.formError}</div> : null}
          </form>
       </div>
    )

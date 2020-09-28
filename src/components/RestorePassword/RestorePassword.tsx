@@ -7,14 +7,11 @@ import {useFormik} from 'formik'
 import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
-import {emptyField, validateEmail} from '../../utlis/validates'
+import * as Yup from 'yup';
 
-const validate = (values: { email: string }) => {
-   const errors = {} as any
-   errors.email = emptyField(values.email)
-   errors.email = validateEmail(values.email)
-   return errors
-}
+const validationSchema = (values: { email: string }) => Yup.object({
+   email: Yup.string().email('Invalid email address').required('Required'),
+})
 
 const RestorePassword = () => {
 
@@ -28,7 +25,7 @@ const RestorePassword = () => {
       initialValues: {
          email: '',
       },
-      validate,
+      validationSchema,
       onSubmit: values => {
          dispatch(getEmailConfirmation(values.email))
       },
