@@ -7,7 +7,8 @@ import {LOGIN, PROFILE} from "../../route";
 import {Redirect} from "react-router-dom";
 import {setIsLoggedInAC} from "../../reducers/login-reducer";
 import {logoutTC} from "../../reducers/profile-reducer";
-import Table from "../Table/Table";
+import Pack from "../Pack/Pack";
+import Button from "../common/Button/Button";
 
 const Profile = () => {
 
@@ -31,8 +32,8 @@ const Profile = () => {
             <p>email: {userData.email}</p>
             <p>publicCardPacksCount: {userData.publicCardPacksCount}</p>
             <div><img src={userData.avatar} alt={userData.name} width={200}/></div>
-            <button onClick={setLogOut}>LogOut</button>
-            <Table/>
+            <Button onClick={setLogOut} labelTitle={'LogOut'}/>
+            <Pack/>
         </div>
     )
 }

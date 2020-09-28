@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import {Route, Switch} from 'react-router-dom'
-import {LOGIN, NEW_PASSWORD, PROFILE, REGISTRATION, RESTORE_PASSWORD} from './route'
+import {CARDS, LOGIN, NEW_PASSWORD, PROFILE, REGISTRATION, RESTORE_PASSWORD} from './route'
 import Login from './components/Login/Login'
 import NewPassword from './components/NewPassword/NewPassword'
 import Profile from './components/Profile/Profile'
@@ -9,6 +9,7 @@ import Registration from './components/Registration/Registration'
 import RestorePassword from './components/RestorePassword/RestorePassword'
 import Header from './components/Header/Header'
 import NotFound from './components/NotFound/NotFound'
+import Cards from "./components/Cards/Cards";
 
 function App() {
    return (
@@ -21,6 +22,7 @@ function App() {
                <Route path={PROFILE} render={() => <Profile/>}/>
                <Route path={REGISTRATION} render={() => <Registration/>}/>
                <Route path={RESTORE_PASSWORD} render={() => <RestorePassword/>}/>
+               <Route path={CARDS} render={() => <Cards/>}/>
                <Route component={NotFound}/>
             </Switch>
          </div>
