@@ -26,11 +26,10 @@
     .errorMessage {
       position: absolute;
       top: 50%;
-      left: 20px;
+      left: 10px;
       min-width: 100px;
       padding: 5px;
       text-align: center;
-      background: #fff;
       transform: translateY(-50%) scale(0);
       transform-origin: left;
       transition: .3s;

@@ -10,7 +10,6 @@ import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
 import {useFormik} from 'formik'
-import Icons from '../common/Icons/Icons'
 
 const validate = (values: { firstNewPassword: string, secondNewPassword: string, formError: string }) => {
    const errors = {} as any
@@ -66,17 +65,15 @@ const NewPassword = () => {
             <div className={classes.inputWrapper}>
                <Input type="password"
                       labelTitle={'Enter a new password:'}
+                      error={formik.errors.firstNewPassword}
                       {...formik.getFieldProps('firstNewPassword')}/>
-               {formik.errors.firstNewPassword ?
-                  <div className={classes.errorMsg}>{Icons.error()}</div> : null}
             </div>
 
             <div className={classes.inputWrapper}>
                <Input type="password"
                       labelTitle={'Confirm password:'}
+                      error={formik.errors.secondNewPassword}
                       {...formik.getFieldProps('secondNewPassword')}/>
-               {formik.errors.secondNewPassword ?
-                  <div className={classes.errorMsg}>{Icons.error()}</div> : null}
             </div>
 
             <Button labelTitle={'Send'}
