@@ -6,7 +6,8 @@ import {restorePswReducer} from "./restorePassword-reducer";
 import {profileReducer} from "./profile-reducer";
 import {registrationReducer} from "./registration-reducer";
 import {requestReducer} from "./request-reducer";
-import {tableReducer} from "./table-reducer";
+import {packReducer} from "./pack-reducer";
+import {cardsReducer} from "./cards-reducer";
 
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     registration: registrationReducer,
     request: requestReducer,
-    table: tableReducer
+    packs: packReducer,
+    cards: cardsReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
