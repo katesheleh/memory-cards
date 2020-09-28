@@ -13,21 +13,25 @@ const iconDefinition = (iconName: any, pref?: any): IconDefinition => {
 }
 
 // создаете новую иконку с именем из каталога https://fontawesome.com/icons (только free)
-const Coffee = () => <FontAwesomeIcon icon={iconDefinition('coffee')}/>
 const SignInAlt = () => <FontAwesomeIcon icon={iconDefinition('sign-in-alt')}/>
 const SignOutAlt = () => <FontAwesomeIcon icon={iconDefinition('sign-out-alt')}/>
 const Key = () => <FontAwesomeIcon icon={iconDefinition('key')}/>
 const Lock = () => <FontAwesomeIcon icon={iconDefinition('lock')}/>
 const Error = () => <FontAwesomeIcon icon={iconDefinition('exclamation-circle')}/>
+const Eye = () => <FontAwesomeIcon icon={iconDefinition('eye')}/>
+const EyeSlash = () => <FontAwesomeIcon icon={iconDefinition('eye-slash')}/>
+const SearchLocation = () => <FontAwesomeIcon icon={iconDefinition('search-location')}/>
 
 // добавляете в этот объект
 const Icons = {
-   coffee: Coffee,
-   signInAlt: SignInAlt,
-   signOutAlt: SignOutAlt,
-   key: Key,
-   lock: Lock,
-   error: Error,
+   SignInAlt,
+   SignOutAlt,
+   Key,
+   Lock,
+   Error,
+   Eye,
+   EyeSlash,
+   SearchLocation,
 }
 
 export default Icons

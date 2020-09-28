@@ -1,6 +1,7 @@
 @import '../../../styles/variable';
 
 .btn {
+  cursor: pointer;
   width: 100%;
   max-width: 150px;
   color: $color-text-secondary;
@@ -16,7 +17,7 @@
   &:hover {
     border: 1px solid $color-accent;
     background-color: #fff;
-    color: $color-text-primary;
+    color: $color-accent;
   }
 
   &:disabled {

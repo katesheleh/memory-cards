@@ -7,19 +7,11 @@ import {useFormik} from 'formik'
 import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
-import Icons from '../common/Icons/Icons'
+import * as Yup from 'yup'
 
-const validate = (values: {email: string}) => {
-   const errors = {} as any
-
-   if (!values.email) {
-      errors.email = 'Required'
-   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
-   }
-
-   return errors
-}
+const validationSchema = () => Yup.object({
+   email: Yup.string().email('Invalid email address').required('Required'),
+})
 
 const RestorePassword = () => {
 
@@ -33,7 +25,7 @@ const RestorePassword = () => {
       initialValues: {
          email: '',
       },
-      validate,
+      validationSchema,
       onSubmit: values => {
          dispatch(getEmailConfirmation(values.email))
       },
@@ -42,22 +34,21 @@ const RestorePassword = () => {
    return (
       <div className={classes.container}>
          <h1>Restore password</h1>
-
          {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
-
          {
             success &&
             <div style={{color: 'green', marginBottom: '10px'}}>
-                Check your email: <a href={`mailto:${selectedEmail}`}>{selectedEmail}</a>
+                Check your email:{' '}<a href={`mailto:${selectedEmail}`}>{selectedEmail}</a>{' '}
                 and follow the link in there
             </div>
          }
+
          <form onSubmit={formik.handleSubmit}>
             <div className={classes.inputWrapper}>
-               <Input labelTitle={'Email:'} {...formik.getFieldProps('email')}/>
-               {formik.errors.email ?
-                  <div className={classes.errorMsg}>{formik.errors.email} {Icons.error()}</div> : null}
+               <Input labelTitle={'Email:'}
+                      error={formik.errors.email}
+                      {...formik.getFieldProps('email')}/>
             </div>
 
             <Button type="submit" labelTitle={'send'} disabled={!!formik.errors.email}/>
