@@ -2,6 +2,7 @@
 
 .label {
   display: block;
+  position: relative;
 
   span {
     font-size: 18px;
@@ -9,13 +10,45 @@
     color: $color-text-primary;
   }
 
+  .error {
+    cursor: pointer;
+    position: absolute;
+    color: red;
+    top: 50%;
+    right: -20px;
+
+    &:hover {
+      .errorMessage {
+        transform: translateY(-50%) scale(1);
+      }
+    }
+
+    .errorMessage {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      min-width: 100px;
+      padding: 5px;
+      text-align: center;
+      background: #fff;
+      transform: translateY(-50%) scale(0);
+      transform-origin: left;
+      transition: .3s;
+    }
+  }
+
+  .showPassword {
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    right: 8px;
+  }
+
   .input {
     outline: none;
     border: 1px solid #e8e8e8;
     padding: 5px 15px;
     transition: .2s;
-    width: 100%;
-    max-width: 250px;
     height: 30px;
     color: $color-text-primary;
     font-size: 16px;
