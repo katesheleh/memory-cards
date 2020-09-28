@@ -7,9 +7,9 @@ import {useFormik} from 'formik'
 import Input from '../common/Input/Input'
 import Preloader from '../common/Preloader/Preloader'
 import Button from '../common/Button/Button'
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
-const validationSchema = (values: { email: string }) => Yup.object({
+const validationSchema = () => Yup.object({
    email: Yup.string().email('Invalid email address').required('Required'),
 })
 
