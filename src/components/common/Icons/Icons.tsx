@@ -20,6 +20,7 @@ const Lock = () => <FontAwesomeIcon icon={iconDefinition('lock')}/>
 const Error = () => <FontAwesomeIcon icon={iconDefinition('exclamation-circle')}/>
 const Eye = () => <FontAwesomeIcon icon={iconDefinition('eye')}/>
 const EyeSlash = () => <FontAwesomeIcon icon={iconDefinition('eye-slash')}/>
+const SearchLocation = () => <FontAwesomeIcon icon={iconDefinition('search-location')}/>
 
 // добавляете в этот объект
 const Icons = {
@@ -30,6 +31,7 @@ const Icons = {
    Error,
    Eye,
    EyeSlash,
+   SearchLocation,
 }
 
 export default Icons
