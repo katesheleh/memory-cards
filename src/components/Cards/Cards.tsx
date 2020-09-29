@@ -5,7 +5,8 @@ import {getCardsTC} from "../../reducers/cards-reducer";
 import {CardsType} from "../../api/cards-api";
 import {Link, useParams} from "react-router-dom";
 import Button from "../common/Button/Button";
-import {PROFILE} from "../../route";
+import {PACKS} from "../../route";
+import classes from './Cards.module.scss';
 
 const Cards = () => {
 
@@ -18,23 +19,23 @@ const Cards = () => {
     }, [])
 
     return (
-        <div>
+        <div className={classes.container}>
             <h1>Cards</h1>
-            <Link to={PROFILE}><Button labelTitle={'Go to Profile'}/></Link>
-            <table>
-                <tr>
-                    <td><b>Question</b></td>
-                    <td><b>Answer</b></td>
-                    <td><b>Edit</b></td>
-                    <td><b>Delete</b></td>
-                </tr>
-                {cards && cards.map(c => <tr key={c._id}>
-                    <td>{c.question}</td>
-                    <td>{c.answer}</td>
-                    <td><Button labelTitle={'Edit'}/></td>
-                    <td><Button labelTitle={'Delete'}/></td>
-                </tr>)}
-            </table>
+            <Link to={PACKS}><Button labelTitle={'Back to Packs'}/></Link>
+            <div className={classes.table}>
+                <div className={`${classes.tableHeader} ${classes.tableRow}`}>
+                    <div><strong>Question</strong></div>
+                    <div><strong>Answer</strong></div>
+                    <div><strong>Actions</strong></div>
+                </div>
+
+                {cards && cards.map(c => <div key={c._id} className={classes.tableRow}>
+                        <div>{c.question}</div>
+                        <div>{c.answer}</div>
+                        <div><Button labelTitle={'Edit'}/><Button labelTitle={'Delete'}/></div>
+                    </div>
+                )}
+            </div>
 
 
         </div>

@@ -18,13 +18,19 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
     switch (action.type) {
         case 'SET_PACKS':
             return {...state, cardPacks: action.cardPacks}
+        case 'REMOVE_PACK':
+            let newPack = {} as CardsPackType
+            return {...state, cardPacks: state.cardPacks.filter((pack) => pack._id != action._id)}
+        case 'ADD_PACK':
+            return {...state, cardPacks: [action.newPack, ...state.cardPacks]}
         default:
             return state;
     }
 }
 // AC
 export const setPacksAC = (cardPacks: CardsPackType[]) => ({type: 'SET_PACKS', cardPacks} as const)
-
+export const removePackAC = (_id: string) => ({type: 'REMOVE_PACK', _id} as const)
+export const addPackAC = (newPack: CardsPackType) => ({type: 'ADD_PACK', newPack} as const)
 
 // thunks
 export const getPackTC = (user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
@@ -35,7 +41,31 @@ export const getPackTC = (user_id: string) => (dispatch: Dispatch<ActionsType | 
             dispatch(setPacksAC(res.data.cardPacks))
         })
         .catch((error) => {
-            dispatch(errorAC(error.response.data.error))
+            //dispatch(errorAC(error.response.data.error))
+            dispatch(isFetchingAC(false))
+        })
+}
+
+export const removePackTC = (_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+    dispatch(isFetchingAC(true))
+    packAPI.removeCardPack(_id)
+        .then(res => {
+            dispatch(isFetchingAC(false))
+            dispatch(removePackAC(_id))
+        })
+        .catch((error) => {
+            //dispatch(errorAC(error.response.data.error))
+            dispatch(isFetchingAC(false))
+        })
+}
+
+export const addPackTC = (name: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+    dispatch(isFetchingAC(true))
+    packAPI.addCardPack(name)
+        .then(res => {
+            dispatch(isFetchingAC(false))
+        })
+        .catch((error) => {
             dispatch(isFetchingAC(false))
         })
 }
@@ -52,9 +82,11 @@ type InitialStateType = {
     tokenDeathTime: number
 }
 
-type ActionsType = setPacksACType
+type ActionsType = setPacksACType | removePackACType | addPackACType
 
 
 export type setPacksACType = ReturnType<typeof setPacksAC>
+export type removePackACType = ReturnType<typeof removePackAC>
+export type addPackACType = ReturnType<typeof addPackAC>
 
 
