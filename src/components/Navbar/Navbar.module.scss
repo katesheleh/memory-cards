@@ -1,0 +1,133 @@
+@import '../../styles/variable';
+
+$block-size: 35px;
+
+.menu {
+  display: flex;
+  z-index: 999;
+
+  .menuTitle {
+    height: $block-size;
+    color: #fff;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .switch {
+    cursor: pointer;
+    width: $block-size + 5px;
+    height: $block-size;
+    position: relative;
+
+    & > div {
+      position: absolute;
+      height: 4px;
+      background: #fff;
+      right: 5px;
+      transition: 0.3s;
+
+      &:nth-child(1) {
+        width: 7px;
+        top: 5px;
+      }
+
+      &:nth-child(2) {
+        width: 17px;
+        top: 15px;
+      }
+
+      &:nth-child(3) {
+        width: 27px;
+        top: 25px;
+      }
+    }
+
+    &:hover > div, &.active > div {
+      &:nth-child(1) {
+        width: 30px;
+        top: 5px;
+      }
+
+      &:nth-child(2) {
+        width: 30px;
+        top: 15px;
+      }
+
+      &:nth-child(3) {
+        width: 30px;
+        top: 25px;
+      }
+    }
+
+    //&:hover + .navbar {
+    //  transform: translateX(40%);
+    //}
+
+    &.active + .navbar {
+      transform: translateX(0);
+    }
+  }
+}
+
+
+.navbar {
+  position: fixed;
+  width: 30vw;
+  top: 50px;
+  right: 0;
+  padding: 30px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: $color-accent;
+  min-height: 100%;
+  transition: .3s;
+  transform: translateX(102%);
+  box-shadow: 0 8px 7px 0 rgba(0, 0, 0, .6);
+
+  a.activeLink {
+
+    &:after {
+      transform: scale(1);
+    }
+  }
+
+  a {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    position: relative;
+
+    &:after {
+      position: absolute;
+      display: block;
+      content: '';
+      bottom: -8px;
+      height: 3px;
+      width: 100%;
+      background: #fff;
+      transform: scale(0);
+      transition: .3s;
+    }
+
+    &:hover:after {
+      transform: scale(1);
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    width: 100vw;
+    align-items: center;
+  }
+}
