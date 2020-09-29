@@ -35,6 +35,7 @@ const Navbar = () => {
          <nav className={classes.navbar}>
             <NavLink to={LINKS.LOGIN} activeClassName={classes.activeLink} onClick={onClickLink}>login</NavLink>
             <NavLink to={LINKS.PROFILE} activeClassName={classes.activeLink} onClick={onClickLink}>profile</NavLink>
+            <NavLink to={LINKS.PACKS} activeClassName={classes.activeLink} onClick={onClickLink}>card packs</NavLink>
             <NavLink to={LINKS.REGISTRATION} activeClassName={classes.activeLink} onClick={onClickLink}>registration</NavLink>
             <NavLink to={LINKS.RESTORE_PASSWORD} activeClassName={classes.activeLink} onClick={onClickLink}>restore password</NavLink>
          </nav>

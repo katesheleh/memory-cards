@@ -40,7 +40,7 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType
             dispatch(authMeAC(false))
         })
         .catch((error) => {
-            dispatch(errorAC(error.response.data.error))
+            //dispatch(errorAC(error.response.data.error))
             dispatch(isFetchingAC(false))
         })
 }

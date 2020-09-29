@@ -39,7 +39,7 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
          }
       })
       .catch((error) => {
-         dispatch(errorAC(error.response.data.error))
+         //dispatch(errorAC(error.response.data.error))
          dispatch(isFetchingAC(false))
       })
 }

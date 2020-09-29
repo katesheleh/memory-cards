@@ -1,0 +1,40 @@
+@import '../../styles/variable';
+
+.table {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.tableRow {
+  display: flex;
+
+  > div {
+    width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid $color-gray-light;
+    border-top: 0;
+    border-right: 0;
+
+    &:last-child {
+      width: 50%;
+      border-right: 1px solid $color-gray-light;
+    }
+  }
+}
+
+.tableHeader {
+  border-top: 1px solid $color-gray-light;
+}
+
+.container {
+  @extend %container;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
