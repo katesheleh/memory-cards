@@ -18,7 +18,6 @@ const RestorePassword = () => {
    const dispatch = useDispatch()
    const success = useSelector<AppRootStateType, boolean>(state => state.restorePsw.success)
    const selectedEmail = useSelector<AppRootStateType, string>(state => state.restorePsw.selectedEmail)
-   const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
 
    const formik = useFormik({
@@ -34,7 +33,6 @@ const RestorePassword = () => {
    return (
       <div className={classes.container}>
          <h1>Restore password</h1>
-         {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
          {
             success &&
@@ -57,4 +55,4 @@ const RestorePassword = () => {
    )
 }
 
-export default RestorePassword
+export default React.memo(RestorePassword)

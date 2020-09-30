@@ -18,8 +18,10 @@ const NotFound = React.lazy(() => import('./components/NotFound/NotFound'))
 
 function App() {
    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
+   const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
    return (
       <div className="App">
+         {requestIsFetching && <Preloader/>}
          <Header/>
          <div className="content">
             <Suspense fallback={<Preloader/>}>
