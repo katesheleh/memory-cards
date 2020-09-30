@@ -3,11 +3,10 @@ import styles from './Profile.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {LoginResponseType} from "../../api/auth-api";
-import {LOGIN, PROFILE} from "../../route";
-import {Redirect} from "react-router-dom";
+import {LOGIN, PACKS, PROFILE} from "../../route";
+import {Link, Redirect} from "react-router-dom";
 import {setIsLoggedInAC} from "../../reducers/login-reducer";
 import {logoutTC} from "../../reducers/profile-reducer";
-import Pack from "../Pack/Pack";
 import Button from "../common/Button/Button";
 
 const Profile = () => {
@@ -31,9 +30,9 @@ const Profile = () => {
             <h3>name: {userData.name}</h3>
             <p>email: {userData.email}</p>
             <p>publicCardPacksCount: {userData.publicCardPacksCount}</p>
+            <p><u><Link to={PACKS}>See my card packs</Link></u></p>
             <div><img src={userData.avatar} alt={userData.name} width={200}/></div>
             <Button onClick={setLogOut} labelTitle={'LogOut'}/>
-            <Pack/>
         </div>
     )
 }

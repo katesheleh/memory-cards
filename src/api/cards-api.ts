@@ -3,7 +3,7 @@ import {instance} from "./api";
 
 export const cardsAPI = {
     getCards(cardsPack_id: string) {
-        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}`)
+        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}&pageCount=20`)
     },
 }
 

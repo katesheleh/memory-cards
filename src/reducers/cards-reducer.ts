@@ -33,7 +33,7 @@ export const getCardsTC = (cardsPack_id: string) => (dispatch: Dispatch<ActionsT
             dispatch(setCardsAC(res.data.getCards))
         })
         .catch((error) => {
-            dispatch(errorAC(error.response.data.error))
+            //dispatch(errorAC(error.response.data.error))
             dispatch(isFetchingAC(false))
         })
 }
