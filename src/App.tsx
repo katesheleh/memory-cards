@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import {Route, Switch} from 'react-router-dom'
 import {CARDS, LOGIN, NEW_PASSWORD, PACKS, PROFILE, REGISTRATION, RESTORE_PASSWORD} from './route'
@@ -11,11 +11,18 @@ import Header from './components/Header/Header'
 import NotFound from './components/NotFound/NotFound'
 import Cards from "./components/Cards/Cards";
 import Packs from "./components/Packs/Packs";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./reducers/store";
+import {authSucessTC} from "./reducers/login-reducer";
 
 function App() {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(authSucessTC())
+    }, [])
+
     return (
         <div className="App">
             <Header/>

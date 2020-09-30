@@ -8,6 +8,7 @@ import {Link, Redirect} from 'react-router-dom'
 import {LOGIN} from "../../route";
 import classes from './Packs.module.scss'
 import Preloader from "../common/Preloader/Preloader";
+import {authSucessTC} from "../../reducers/login-reducer";
 
 const Packs = () => {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
@@ -19,11 +20,8 @@ const Packs = () => {
 
     useEffect(() => {
         dispatch(getPackTC(user_id))
-    }, [])
-
-    if (!isLoggedIn) {
-        return <Redirect to={LOGIN}/>
-    }
+        dispatch(authSucessTC())
+    }, [isLoggedIn])
 
     const removePack = (_id: string) => {
         dispatch(removePackTC(_id))
@@ -33,6 +31,10 @@ const Packs = () => {
     const addPack = (name: string) => {
         dispatch(addPackTC(name))
         dispatch(getPackTC(user_id))
+    }
+
+    if (!isLoggedIn) {
+        return <Redirect to={LOGIN}/>
     }
 
 
