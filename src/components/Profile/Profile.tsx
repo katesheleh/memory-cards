@@ -5,8 +5,7 @@ import {AppRootStateType} from "../../reducers/store";
 import {LoginResponseType} from "../../api/auth-api";
 import {LOGIN, PACKS, PROFILE} from "../../route";
 import {Link, Redirect} from "react-router-dom";
-import {setIsLoggedInAC} from "../../reducers/login-reducer";
-import {logoutTC} from "../../reducers/profile-reducer";
+import {setIsLoggedInAC, logoutTC} from "../../reducers/login-reducer";
 import Button from "../common/Button/Button";
 
 const Profile = () => {
