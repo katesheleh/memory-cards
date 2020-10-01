@@ -24,13 +24,13 @@ const Packs = () => {
     }, [isLoggedIn])
 
     const removePack = (_id: string) => {
-        dispatch(removePackTC(_id))
-        dispatch(getPackTC(user_id))
+        debugger
+        dispatch(removePackTC(_id, user_id))
     }
 
     const addPack = (name: string) => {
-        dispatch(addPackTC(name))
-        dispatch(getPackTC(user_id))
+        debugger
+        dispatch(addPackTC(name, user_id))
     }
 
     if (!isLoggedIn) {
