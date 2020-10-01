@@ -33,7 +33,7 @@ const Cards = () => {
         <div className={classes.container}>
             <h1>Cards</h1>
             <Button
-                labelTitle={'Add new Pack'}
+                labelTitle={'Add a Card'}
                 onClick={() => addCard('???', '!!!')}
             />
             <div className={classes.table}>
