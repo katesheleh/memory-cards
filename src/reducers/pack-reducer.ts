@@ -46,12 +46,14 @@ export const getPackTC = (user_id: string) => (dispatch: Dispatch<ActionsType | 
         })
 }
 
-export const removePackTC = (_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const removePackTC = (_id: string, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
     packAPI.removeCardPack(_id)
         .then(res => {
+            debugger
             dispatch(isFetchingAC(false))
             dispatch(removePackAC(_id))
+            dispatch(getPackTC(user_id))
         })
         .catch((error) => {
             //dispatch(errorAC(error.response.data.error))
@@ -59,11 +61,13 @@ export const removePackTC = (_id: string) => (dispatch: Dispatch<ActionsType | i
         })
 }
 
-export const addPackTC = (name: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const addPackTC = (name: string, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
     packAPI.addCardPack(name)
         .then(res => {
+            debugger
             dispatch(isFetchingAC(false))
+            dispatch(getPackTC(user_id))
         })
         .catch((error) => {
             dispatch(isFetchingAC(false))
@@ -82,7 +86,7 @@ type InitialStateType = {
     tokenDeathTime: number
 }
 
-type ActionsType = setPacksACType | removePackACType | addPackACType
+type ActionsType = setPacksACType | removePackACType | addPackACType | any
 
 
 export type setPacksACType = ReturnType<typeof setPacksAC>
