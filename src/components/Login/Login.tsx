@@ -22,7 +22,6 @@ const validationSchema = () => Yup.object({
 
 const Login = () => {
    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
-   const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
    const dispatch = useDispatch()
 
@@ -47,7 +46,6 @@ const Login = () => {
          <h1>Login</h1>
          <form onSubmit={formik.handleSubmit}>
 
-            {requestIsFetching && <Preloader/>}
             {errorMsg && <p><strong>{errorMsg}</strong></p>}
 
             <div className={classes.formItem}>
@@ -82,4 +80,4 @@ const Login = () => {
    )
 }
 
-export default Login
+export default React.memo(Login)

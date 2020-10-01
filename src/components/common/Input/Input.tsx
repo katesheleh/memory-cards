@@ -44,4 +44,4 @@ const Input = (props: InputPropsType) => {
    )
 }
 
-export default Input
+export default React.memo(Input)

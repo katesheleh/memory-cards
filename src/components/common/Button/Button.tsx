@@ -12,4 +12,4 @@ const Button = (props: InputPropsType) => {
     )
 }
 
-export default Button
+export default React.memo(Button)
