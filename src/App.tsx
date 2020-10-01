@@ -22,9 +22,9 @@ function App() {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
     const dispatch = useDispatch();
 
-    React.useEffect(() => {
+/*    React.useEffect(() => {
         dispatch(authSucessTC())
-    }, [])
+    }, [])*/
 
     return (
         <div className="App">

@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {errorAC, ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
+import {ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
 import {CardsPackType, packAPI} from "../api/pack-api";
 
 let initialState = {
@@ -19,18 +19,25 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case 'SET_PACKS':
             return {...state, cardPacks: action.cardPacks}
         case 'REMOVE_PACK':
-            let newPack = {} as CardsPackType
             return {...state, cardPacks: state.cardPacks.filter((pack) => pack._id != action._id)}
         case 'ADD_PACK':
             return {...state, cardPacks: [action.newPack, ...state.cardPacks]}
+        case 'EDIT_PACK':
+            return {
+                ...state,
+                cardPacks: state.cardPacks.map(p => p._id === action.pack_id ? {...p, ...action.model} : p)
+            }
         default:
             return state;
     }
 }
+
+
 // AC
 export const setPacksAC = (cardPacks: CardsPackType[]) => ({type: 'SET_PACKS', cardPacks} as const)
 export const removePackAC = (_id: string) => ({type: 'REMOVE_PACK', _id} as const)
 export const addPackAC = (newPack: CardsPackType) => ({type: 'ADD_PACK', newPack} as const)
+export const editPackAC = (pack_id: string, model: EditCardPackType) => ({type: 'EDIT_PACK', pack_id, model} as const)
 
 // thunks
 export const getPackTC = (user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
@@ -50,13 +57,12 @@ export const removePackTC = (_id: string, user_id: string) => (dispatch: Dispatc
     dispatch(isFetchingAC(true))
     packAPI.removeCardPack(_id)
         .then(res => {
-            debugger
             dispatch(isFetchingAC(false))
             dispatch(removePackAC(_id))
             dispatch(getPackTC(user_id))
         })
         .catch((error) => {
-            //dispatch(errorAC(error.response.data.error))
+            console.log(error.response.data.error)
             dispatch(isFetchingAC(false))
         })
 }
@@ -65,11 +71,26 @@ export const addPackTC = (name: string, user_id: string) => (dispatch: Dispatch<
     dispatch(isFetchingAC(true))
     packAPI.addCardPack(name)
         .then(res => {
-            debugger
             dispatch(isFetchingAC(false))
+            dispatch(addPackAC(res.data.newCardsPack))
             dispatch(getPackTC(user_id))
         })
         .catch((error) => {
+            console.log(error.response.data.error)
+            dispatch(isFetchingAC(false))
+        })
+}
+
+export const editPackTC = (pack_id: string, model: EditCardPackType, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+    dispatch(isFetchingAC(true))
+    packAPI.editCardPack(pack_id, model)
+        .then(res => {
+            dispatch(isFetchingAC(false))
+            editPackAC(pack_id, model)
+            dispatch(getPackTC(user_id))
+        })
+        .catch((error) => {
+            console.log(error.response.data.error)
             dispatch(isFetchingAC(false))
         })
 }
@@ -86,11 +107,19 @@ type InitialStateType = {
     tokenDeathTime: number
 }
 
-type ActionsType = setPacksACType | removePackACType | addPackACType | any
+
+export type EditCardPackType = {
+    name?: string
+    private?: boolean
+    rating?: number
+}
+
+type ActionsType = setPacksACType | removePackACType | addPackACType | editPackACType | any
 
 
 export type setPacksACType = ReturnType<typeof setPacksAC>
 export type removePackACType = ReturnType<typeof removePackAC>
 export type addPackACType = ReturnType<typeof addPackAC>
+export type editPackACType = ReturnType<typeof editPackAC>
 
 

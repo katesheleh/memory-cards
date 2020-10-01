@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
-import {getCardsTC} from "../../reducers/cards-reducer";
+import {addCardTC, EditCardModelType, editCardTC, getCardsTC, removeCardTC} from "../../reducers/cards-reducer";
 import {CardsType} from "../../api/cards-api";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import Button from "../common/Button/Button";
-import {PACKS} from "../../route";
 import classes from './Cards.module.scss';
 
 const Cards = () => {
@@ -18,10 +17,25 @@ const Cards = () => {
         dispatch(getCardsTC(cardId))
     }, [])
 
+    const removeCard = (_id: string) => {
+        dispatch(removeCardTC(_id, cardId))
+    }
+
+    const addCard = (question: string, answer: string) => {
+        dispatch(addCardTC(cardId, question, answer))
+    }
+
+    const editCard = (card_id: string, model: EditCardModelType) => {
+        dispatch(editCardTC(card_id, model, cardId))
+    }
+
     return (
         <div className={classes.container}>
             <h1>Cards</h1>
-            <Link to={PACKS}><Button labelTitle={'Back to Packs'}/></Link>
+            <Button
+                labelTitle={'Add new Pack'}
+                onClick={() => addCard('???', '!!!')}
+            />
             <div className={classes.table}>
                 <div className={`${classes.tableHeader} ${classes.tableRow}`}>
                     <div><strong>Question</strong></div>
@@ -32,7 +46,10 @@ const Cards = () => {
                 {cards && cards.map(c => <div key={c._id} className={classes.tableRow}>
                         <div>{c.question}</div>
                         <div>{c.answer}</div>
-                        <div><Button labelTitle={'Edit'}/><Button labelTitle={'Delete'}/></div>
+                        <div>
+                            <Button labelTitle={'Edit'}
+                                    onClick={() => editCard(c._id, {question: 'New Question', answer: 'New Answer'})}/>
+                            <Button labelTitle={'Delete'} onClick={() => removeCard(c._id)}/></div>
                     </div>
                 )}
             </div>
