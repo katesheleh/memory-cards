@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
-import {addPackTC, getPackTC, removePackTC} from "../../reducers/pack-reducer";
+import {addPackTC, EditCardPackType, editPackTC, getPackTC, removePackTC} from "../../reducers/pack-reducer";
 import Button from "../common/Button/Button";
 import {CardsPackType} from "../../api/pack-api";
 import {Link, Redirect} from 'react-router-dom'
 import {LOGIN} from "../../route";
 import classes from './Packs.module.scss'
 import Preloader from "../common/Preloader/Preloader";
-import {authSucessTC} from "../../reducers/login-reducer";
 
 const Packs = () => {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
@@ -20,17 +19,18 @@ const Packs = () => {
 
     useEffect(() => {
         dispatch(getPackTC(user_id))
-        dispatch(authSucessTC())
-    }, [isLoggedIn])
+    }, [])
 
     const removePack = (_id: string) => {
-        debugger
         dispatch(removePackTC(_id, user_id))
     }
 
     const addPack = (name: string) => {
-        debugger
         dispatch(addPackTC(name, user_id))
+    }
+
+    const editPack = (pack_id: string, model: EditCardPackType) => {
+        dispatch(editPackTC(pack_id, model, user_id))
     }
 
     if (!isLoggedIn) {
@@ -57,9 +57,9 @@ const Packs = () => {
                     return (
                         <div key={pack._id} className={classes.tableRow}>
                             <div>{pack.name}</div>
-                            <div><Link to={`/cards/${pack._id}`}>Show cards</Link></div>
+                            <div><Link to={`/cards/${pack._id}`}><Button labelTitle={'Show cards'}/></Link></div>
                             <div>
-                                <Button labelTitle={'Edit'}/>
+                                <Button labelTitle={'Edit'} onClick={() => editPack(pack._id, {name: 'new mane', private: true})}/>
                                 <Button labelTitle={'Delete'} onClick={() => removePack(pack._id)}/></div>
                         </div>
 
