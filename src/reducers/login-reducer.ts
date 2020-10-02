@@ -65,6 +65,7 @@ export const authSucessTC = () => (dispatch: Dispatch<ActionsType | isFetchingAC
     authAPI.authMe()
         .then(res => {
             dispatch(isFetchingAC(false))
+            dispatch(getUserDataAC(res.data))
             dispatch(authMeAC(true))
         })
         .catch((error) => {

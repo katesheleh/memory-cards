@@ -3,7 +3,7 @@ import {ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
 import {cardsAPI, CardsType, NewCardType} from "../api/cards-api";
 
 let initialState = {
-    getCards: [] as CardsType[],
+    cards: [] as CardsType[],
     cardsTotalCount: 0,
     maxGrade: 0,
     minGrade: 0,
@@ -14,15 +14,15 @@ let initialState = {
 export const cardsReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'SET_CARDS':
-            return {...state, getCards: action.getCards}
+            return {...state, cards: action.cards}
         case 'ADD_CARD':
-            return {...state, getCards: [action.newCard, ...state.getCards]}
+            return {...state, cards: [action.newCard, ...state.cards]}
         case 'REMOVE_CARD':
-            return {...state, getCards: state.getCards.filter((c) => c._id != action._id)}
+            return {...state, cards: state.cards.filter((c) => c._id != action._id)}
         case 'EDIT_CARD':
             return {
                 ...state,
-                getCards: state.getCards.map(p => p._id === action.card_id ? {...p, ...action.model} : p)
+                cards: state.cards.map(p => p._id === action.card_id ? {...p, ...action.model} : p)
             }
         default:
             return state;
@@ -30,7 +30,7 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Act
 }
 
 // AC
-export const setCardsAC = (getCards: CardsType[]) => ({type: 'SET_CARDS', getCards} as const)
+export const setCardsAC = (cards: CardsType[]) => ({type: 'SET_CARDS', cards} as const)
 export const addCardAC = (newCard: NewCardType) => ({type: 'ADD_PACK', newCard} as const)
 export const removeCardAC = (_id: string) => ({type: 'REMOVE_CARD', _id} as const)
 export const editCardAC = (card_id: string, model: EditCardModelType) => ({type: 'EDIT_CARD', card_id, model} as const)
@@ -41,7 +41,7 @@ export const getCardsTC = (cardsPack_id: string) => (dispatch: Dispatch<ActionsT
     cardsAPI.getCards(cardsPack_id)
         .then(res => {
             dispatch(isFetchingAC(false))
-            dispatch(setCardsAC(res.data.getCards))
+            dispatch(setCardsAC(res.data.cards))
         })
         .catch((error) => {
             //dispatch(errorAC(error.response.data.error))
@@ -93,7 +93,7 @@ export const editCardTC = (card_id: string, model: EditCardModelType, cardsPack_
 
 
 type InitialStateType = {
-    getCards: Array<CardsType>
+    cards: Array<CardsType>
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
