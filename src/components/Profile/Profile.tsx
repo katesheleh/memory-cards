@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Profile.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {LoginResponseType} from "../../api/auth-api";
 import {LOGIN, PACKS, PROFILE} from "../../route";
 import {Link, Redirect} from "react-router-dom";
-import {setIsLoggedInAC, logoutTC} from "../../reducers/login-reducer";
+import {setIsLoggedInAC, logoutTC, authSucessTC} from "../../reducers/login-reducer";
 import Button from "../common/Button/Button";
 
 const Profile = () => {
@@ -13,6 +13,16 @@ const Profile = () => {
     const userData = useSelector<AppRootStateType, LoginResponseType>(state => state.login.profile)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            handleAuth()
+        }
+    }, [])
+
+    const handleAuth = async () => {
+        await dispatch(authSucessTC());
+    }
 
     const setLogOut = () => {
         dispatch(logoutTC())
