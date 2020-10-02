@@ -9,7 +9,7 @@ import classes from './Cards.module.scss';
 
 const Cards = () => {
 
-    const cards = useSelector<AppRootStateType, Array<CardsType>>(state => state.cards.getCards)
+    const cards = useSelector<AppRootStateType, Array<CardsType>>(state => state.cards.cards)
     const {cardId} = useParams();
     const dispatch = useDispatch();
 

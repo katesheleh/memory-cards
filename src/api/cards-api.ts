@@ -27,7 +27,7 @@ export const cardsAPI = {
 }
 
 export type CardsResponseType = {
-    getCards: Array<CardsType>
+    cards: Array<CardsType>
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
