@@ -1,0 +1,14 @@
+.search {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search_item {
+  display: flex;
+  button{
+    margin-top: 20px;
+    align-items: center;
+  }
+}

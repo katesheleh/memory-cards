@@ -9,6 +9,7 @@ import {LOGIN} from "../../route";
 import classes from './Packs.module.scss'
 import Preloader from "../common/Preloader/Preloader";
 import {authSucessTC} from "../../reducers/login-reducer";
+import {Search} from "../Search/Search";
 
 const Packs = () => {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
@@ -33,6 +34,7 @@ const Packs = () => {
         dispatch(addPackTC(name, user_id))
     }
 
+
     if (!isLoggedIn) {
         return <Redirect to={LOGIN}/>
     }
@@ -41,6 +43,7 @@ const Packs = () => {
     return (
         <div className={classes.container}>
             {requestIsFetching && <Preloader/>}
+            <Search/>
             <h1>Packs </h1>
             <Button
                 labelTitle={'Add new Pack'}

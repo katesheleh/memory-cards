@@ -3,7 +3,7 @@ import {instance} from "./api";
 
 export const packAPI = {
     getCardPacksUser(user_id: string) {
-        return instance.get<CardsPackResponseType>(`cards/pack?user_id=${user_id}&pageCount=20`)
+        return instance.get<CardsPackResponseType>(`cards/pack?user_id=${user_id}`)
     },
     getCardPacksAll() {
         return instance.get<CardsPackResponseType>(`cards/pack`)
@@ -18,6 +18,12 @@ export const packAPI = {
     removeCardPack(pack_id: string) {
         return instance.delete<CardsPackResponseType>(`cards/pack?id=${pack_id}`)
     },
+    searchCardPacks(searchName?: string, min?: number, max?: number) {
+        return instance.get<CardsPackResponseType>(`cards/pack`
+            + (searchName? `?packName=${searchName}` : '?')
+            + (max ? `&min=${min}&max=${max}` : '')
+        )
+    }
 }
 
 
