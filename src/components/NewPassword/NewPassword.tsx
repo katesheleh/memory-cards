@@ -26,7 +26,6 @@ const NewPassword = () => {
    const dispatch = useDispatch()
    const {token} = useParams()
    const success = useSelector<AppRootStateType, null | boolean>(state => state.newPsw.success)
-   const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
 
    const formik = useFormik({
@@ -48,7 +47,6 @@ const NewPassword = () => {
       <div className={classes.container}>
          <h1>New password</h1>
 
-         {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
 
          <form onSubmit={formik.handleSubmit}>
@@ -80,4 +78,4 @@ const NewPassword = () => {
    )
 }
 
-export default NewPassword
+export default React.memo(NewPassword)

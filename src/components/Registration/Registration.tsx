@@ -26,7 +26,6 @@ const validationSchema = () => Yup.object({
 
 const Registration = () => {
    const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
-   const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
    const errorMsg = useSelector<AppRootStateType, string>(state => state.request.error)
    const dispatch = useDispatch()
 
@@ -53,7 +52,6 @@ const Registration = () => {
    return (
       <div className={classes.container}>
 
-         {requestIsFetching && <Preloader/>}
          {errorMsg && <p><strong>{errorMsg}</strong></p>}
 
          <h1>Registration</h1>
@@ -90,4 +88,4 @@ const Registration = () => {
    )
 }
 
-export default Registration
+export default React.memo(Registration)
