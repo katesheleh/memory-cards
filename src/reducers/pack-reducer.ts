@@ -8,6 +8,8 @@ let initialState = {
     cardPacks: [] as CardsPackType[],
     cardPacksTotalCount: 0,
     packName: '',
+    min: 0,
+    max: 10,
     maxCardsCount: 10,
     minCardsCount: 0,
     page: 0,
@@ -28,7 +30,7 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case 'SEARCH_PACK_NAME':
             return {...state, packName: action.packName}
         case 'SET_MIN_MAX_CARDS_COUNT':
-            return {...state, minCardsCount: action.newValues[0], maxCardsCount: action.newValues[1]}
+            return {...state, min: action.newValues[0], max: action.newValues[1]}
         case 'EDIT_PACK':
             return {
                 ...state,
@@ -105,10 +107,9 @@ export const editPackTC = (pack_id: string, model: EditCardPackType, user_id: st
 }
 
 export const searchPackTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>, getState: () => AppRootStateType) => {
-    debugger
-    const {packName, minCardsCount, maxCardsCount} = getState().packs
+    const {packName, min, max} = getState().packs
     dispatch(isFetchingAC(true))
-    packAPI.searchCardPacks(packName, minCardsCount, maxCardsCount)
+    packAPI.searchCardPacks(packName, min, max)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(setPacksAC(res.data.cardPacks))
@@ -123,6 +124,8 @@ type InitialStateType = {
     cardPacks: CardsPackType[]
     cardPacksTotalCount: number
     packName: string
+    min: number
+    max: number
     maxCardsCount: number
     minCardsCount: number
     page: number

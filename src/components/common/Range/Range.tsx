@@ -12,6 +12,7 @@ const CardsCountRange: React.FC = () => {
     const dispatch = useDispatch();
 
     const setValuesCardsCount = (newValues: number[]) => {
+        debugger
         dispatch(setMinMAxCardsCountAC(newValues));
         setValues(newValues);
     };
