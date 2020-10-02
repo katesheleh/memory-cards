@@ -8,6 +8,8 @@ import {Link, Redirect} from 'react-router-dom'
 import {LOGIN} from "../../route";
 import classes from './Packs.module.scss'
 import Preloader from "../common/Preloader/Preloader";
+import {Search} from "../Search/Search";
+import {authSucessTC} from "../../reducers/login-reducer";
 
 const Packs = () => {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
@@ -28,7 +30,7 @@ const Packs = () => {
     const addPack = (name: string) => {
         dispatch(addPackTC(name, user_id))
     }
-
+    
     const editPack = (pack_id: string, model: EditCardPackType) => {
         dispatch(editPackTC(pack_id, model, user_id))
     }
@@ -41,6 +43,7 @@ const Packs = () => {
     return (
         <div className={classes.container}>
             {requestIsFetching && <Preloader/>}
+            <Search/>
             <h1>Packs </h1>
             <Button
                 labelTitle={'Add new Pack'}
