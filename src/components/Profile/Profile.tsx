@@ -39,7 +39,7 @@ const Profile = () => {
             <h3>name: {userData.name}</h3>
             <p>email: {userData.email}</p>
             <p>publicCardPacksCount: {userData.publicCardPacksCount}</p>
-            <p><u><Link to={PACKS}>See my card packs</Link></u></p>
+            <p><u><Link to={PACKS}>See card packs</Link></u></p>
             <div><img src={userData.avatar} alt={userData.name} width={200}/></div>
             <Button onClick={setLogOut} labelTitle={'LogOut'}/>
         </div>
