@@ -18,8 +18,20 @@
     border-top: 0;
     border-right: 0;
 
+    &:nth-child(1) {
+      width: 26%;
+    }
+
+    &:nth-child(2) {
+      width: 11%;
+    }
+
+    &:nth-child(3) {
+      width: 15%;
+    }
+
     &:last-child {
-      width: 50%;
+      width: 48%;
       border-right: 1px solid $color-gray-light;
     }
   }
@@ -35,6 +47,22 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+}
+
+.modalInnerWrap {
+  text-align: center;
+}
+
+.modalInnerWrap label {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.checkboxWrap {
+  display: block;
+  max-width: 300px;
 }
 
 
