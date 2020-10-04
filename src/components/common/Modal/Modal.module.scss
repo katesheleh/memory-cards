@@ -1,0 +1,30 @@
+@import '../../../styles/variable';
+
+.close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 40px;
+  height: 40px;
+  background: $color-accent;
+  color: $color-text-secondary;
+  text-align: center;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  font-size: 33px;
+  line-height: 32px;
+  cursor: pointer;
+  border: 2px solid $color-accent;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    background: $color-text-secondary;
+    color: $color-accent;
+  }
+}
+
+.header {
+  text-align: center;
+}
