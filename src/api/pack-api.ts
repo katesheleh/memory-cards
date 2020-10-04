@@ -29,10 +29,14 @@ export const packAPI = {
     removeCardPack(pack_id: string) {
         return instance.delete<CardsPackResponseType>(`cards/pack?id=${pack_id}`)
     },
-    searchCardPacks(searchName?: string, min?: number, max?: number) {
+    searchCardPacks(user_id?: string, searchName?: string, min?: number, max?: number, sortPacks?: string, page?: number, pageCount?: number) {
         return instance.get<CardsPackResponseType>(`cards/pack`
-            + (searchName? `?packName=${searchName}` : '?')
+            + (user_id? `?user_id=${user_id}` : '?')
+            + (searchName? `?packName=${searchName}` : '')
             + (max ? `&min=${min}&max=${max}` : '')
+            + (sortPacks ? `&sortPacks=${sortPacks}` : '')
+            + (page ? `&page=${page}` : '')
+            + (pageCount ? `&pageCount=${pageCount}` : '')
         )
     }
 }
