@@ -96,25 +96,25 @@ const Packs = () => {
             <Search/>
             <h1>Packs </h1>
             <Checkbox onChange={changedMyPack} labelTitle={'My packs'}/>
-            <>
-                <Button onClick={() => setNewPackModal(o => !o)} labelTitle='Add new Pack'/>
-                <Modal header={'Add new Pack'} open={newPackModal} close={closeNewPackModal}>
-                    <div className={classes.modalInnerWrap}>
-                        <Input labelTitle='New Pack Name' value={newPackName}
-                               onChange={onAddNewPackNameChange}/>
-                        <div className={classes.modalBtns}>
-                            <Button labelTitle={'Cancel'} onClick={closeNewPackModal}/>
-                            <Button labelTitle={'Confirm'} onClick={() => addPack(newPackName)}/>
-                        </div>
+            {/* start ADD NEW PACK */}
+            <Button onClick={() => setNewPackModal(o => !o)} labelTitle='Add new Pack'/>
+            <Modal header={'Add new Pack'} open={newPackModal} close={closeNewPackModal}>
+                <div className={classes.modalInnerWrap}>
+                    <Input labelTitle='New Pack Name' value={newPackName}
+                           onChange={onAddNewPackNameChange}/>
+                    <div className={classes.modalBtns}>
+                        <Button labelTitle={'Cancel'} onClick={closeNewPackModal}/>
+                        <Button labelTitle={'Confirm'} onClick={() => addPack(newPackName)}/>
                     </div>
-                </Modal>
-            </>
+                </div>
+            </Modal>
+            {/* end ADD NEW PACK */}
             <div className={classes.table}>
                 <div className={`${classes.tableHeader} ${classes.tableRow}`}>
                     <div><strong>Name</strong><SortButton onClickOne={sortPacksNameTop}
                                                           onClickTwo={sortPacksNameBottom}/></div>
                     <div><strong>Cards Count</strong></div>
-                    <div><strong>Updated</strong></div>
+                    <div><strong>Last Update</strong></div>
                     <div><strong>Actions</strong></div>
                 </div>
 
