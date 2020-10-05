@@ -1,17 +1,42 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
-import {addCardTC, EditCardModelType, editCardTC, getCardsTC, removeCardTC} from "../../reducers/cards-reducer";
+import {
+    addCardTC,
+    EditCardModelType,
+    editCardTC,
+    getCardsTC,
+    removeCardTC,
+    searchCardsTC,
+    setAnswerCardsAC,
+    setCardsPageAC,
+    setCardsPageCountAC,
+    setMinMaxCardsGradsAC,
+    setQuestionCardsAC,
+    setSortCardsAC
+} from "../../reducers/cards-reducer";
 import {CardsType} from "../../api/cards-api";
 import {useParams} from "react-router-dom";
 import Button from "../common/Button/Button";
 import classes from './Cards.module.scss';
 import Modal from "../common/Modal/Modal";
 import {Input} from "../common";
+import {Search} from "../Search/Search";
+import Paginator from "../common/Paginator/Paginator";
+import SortButton from "../common/SortButton/SortButton";
 
 const Cards = () => {
 
     const cards = useSelector<AppRootStateType, Array<CardsType>>(state => state.cards.cards)
+    const minGrade = useSelector<AppRootStateType, number>(state => state.cards.minGrade)
+    const maxGrade = useSelector<AppRootStateType, number>(state => state.cards.maxGrade)
+    const cardsAnswer = useSelector<AppRootStateType, string>(state => state.cards.cardsAnswer)
+    const cardsQuestion = useSelector<AppRootStateType, string>(state => state.cards.cardsQuestion)
+    const page = useSelector<AppRootStateType, number>(state => state.cards.page)
+    const pageCount = useSelector<AppRootStateType, number>(state => state.cards.pageCount)
+    const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount)
+
+
     const {cardId} = useParams();
     const dispatch = useDispatch();
 
@@ -56,6 +81,38 @@ const Cards = () => {
         closeEditCardModal()
     }
 
+    const getCardsPage = (page: number, pageCount: number) => {
+        dispatch(setCardsPageAC(page))
+        dispatch(setCardsPageCountAC(pageCount))
+        dispatch(searchCardsTC(cardId))
+    }
+
+    const changeInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setAnswerCardsAC(e.currentTarget.value))
+    }
+
+    const changeSecondInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setQuestionCardsAC(e.currentTarget.value))
+    }
+
+    const setValuesRange = (newValuesRange: number[]) => {
+        dispatch(setMinMaxCardsGradsAC(newValuesRange))
+    }
+
+    const search = () => {
+        dispatch(searchCardsTC(cardId))
+    }
+
+    const sortPacksUpdateTop = () => {
+        dispatch(setSortCardsAC('1updated'))
+        dispatch(searchCardsTC(cardId))
+    }
+
+    const sortPacksUpdateBottom = () => {
+        dispatch(setSortCardsAC('0updated'))
+        dispatch(searchCardsTC(cardId))
+    }
+
     const onAddCardQuestion = (e: ChangeEvent<HTMLInputElement>) => setNewCardQuestion(e.currentTarget.value)
     const onAddCardAnswer = (e: ChangeEvent<HTMLInputElement>) => setNewCardAnswer(e.currentTarget.value)
     const onEditCardQuestion = (e: ChangeEvent<HTMLInputElement>) => setEditCardQuestion(e.currentTarget.value)
@@ -64,6 +121,19 @@ const Cards = () => {
 
     return (
         <div className={classes.container}>
+            <Search
+                inputLabel={'Answer'}
+                setValuesRange={setValuesRange}
+                minValuesRange={minGrade}
+                maxValuesRange={maxGrade}
+                valueSearchName={cardsAnswer}
+                changeInputSearch={changeInputSearch}
+                search={search}
+                secondInput={true}
+                secondInputLabel={'Question'}
+                changeSecondInputSearch={changeSecondInputSearch}
+                valueSecondSearchName={cardsQuestion}
+            />
             <h1>Cards</h1>
             {/* start ADD NEW CARD */}
             <Button onClick={() => setNewCardModal(o => !o)} labelTitle='Add a Card'/>
@@ -83,7 +153,10 @@ const Cards = () => {
                 <div className={`${classes.tableHeader} ${classes.tableRow}`}>
                     <div><strong>Question</strong></div>
                     <div><strong>Answer</strong></div>
-                    <div><strong>Last Update</strong></div>
+                    <div>
+                        <strong>Last Update</strong>
+                        <SortButton onClickOne={sortPacksUpdateTop} onClickTwo={sortPacksUpdateBottom}/>
+                    </div>
                     <div><strong>Actions</strong></div>
                 </div>
 
@@ -135,7 +208,7 @@ const Cards = () => {
                 )}
             </div>
 
-
+            <Paginator page={page} pageCount={pageCount} cardPacksTotalCount={cardsTotalCount} getCardPacksPage={getCardsPage}/>
         </div>
     )
 }

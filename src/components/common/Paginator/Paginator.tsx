@@ -9,7 +9,6 @@ type PaginatorPropsType = {
 }
 
 const Paginator = ({page, pageCount, cardPacksTotalCount, getCardPacksPage}: PaginatorPropsType) => {
-
     const onChangeSelect = (e: any) => {
         getCardPacksPage(page, e.currentTarget.value)
     }
