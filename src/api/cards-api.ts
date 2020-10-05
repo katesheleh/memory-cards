@@ -1,10 +1,11 @@
 import {instance} from "./api";
 import {EditCardModelType} from "../reducers/cards-reducer";
+import {CardsPackResponseType} from "./pack-api";
 
 
 export const cardsAPI = {
     getCards(cardsPack_id: string) {
-        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}&pageCount=20`)
+        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}`)
     },
     addCard(cardsPack_id: string, question: string, answer: string) {
         return instance.post<AddCardResponseType>(`cards/card`, {
@@ -24,6 +25,16 @@ export const cardsAPI = {
     removeCard(_id: string) {
         return instance.delete<CardsResponseType>(`cards/card?id=${_id}`)
     },
+    searchCards(cardsPack_id: string, cardsAnswer?: string, cardsQuestion?: string, min?: number, max?: number, sortCards?: string, page?: number, pageCount?: number) {
+        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}`
+            + (cardsAnswer ? `&cardAnswer=${cardsAnswer}` : '')
+            + (cardsQuestion ? `&cardQuestion=${cardsQuestion}` : '')
+            + (max ? `&min=${min}&max=${max}` : '')
+            + (sortCards ? `&sortCards=${sortCards}` : '')
+            + (page ? `&page=${page}` : '')
+            + (pageCount ? `&pageCount=${pageCount}` : '')
+        )
+    }
 }
 
 export type CardsResponseType = {

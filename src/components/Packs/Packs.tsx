@@ -2,8 +2,8 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {
-    addPackTC, EditCardPackType, editPackTC, getPackTC, removePackTC,
-    searchPackTC, setMyPacksAC, setPageAC, setPageCountAC, setSortPacksAC
+    addPackTC, EditCardPackType, editPackTC, getPackTC, removePackTC, searchPackNameAC,
+    searchPackTC, setMinMAxCardsCountAC, setMyPacksAC, setPageAC, setPageCountAC, setSortPacksAC
 } from "../../reducers/pack-reducer";
 import Button from "../common/Button/Button";
 import {CardsPackType} from "../../api/pack-api";
@@ -27,6 +27,9 @@ const Packs = () => {
     const pageCount = useSelector<AppRootStateType, number>(state => state.packs.pageCount)
     const cardPacksTotalCount = useSelector<AppRootStateType, number>(state => state.packs.cardPacksTotalCount)
     const myPacks = useSelector<AppRootStateType, boolean>(state => state.packs.myPacks)
+    const minCardsCount = useSelector((state: AppRootStateType) => state.packs.minCardsCount)
+    const maxCardsCount = useSelector((state: AppRootStateType) => state.packs.maxCardsCount)
+    const valueSearchName = useSelector((state: AppRootStateType) => state.packs.packName)
 
     const [openDelModal, setOpenDelModal] = useState(false);
     const closeDelModal = () => setOpenDelModal(false);
@@ -86,6 +89,28 @@ const Packs = () => {
         dispatch(searchPackTC())
     }
 
+    const sortPacksUpdateTop = () => {
+        dispatch(setSortPacksAC('1updated'))
+        dispatch(searchPackTC())
+    }
+
+    const sortPacksUpdateBottom = () => {
+        dispatch(setSortPacksAC('0updated'))
+        dispatch(searchPackTC())
+    }
+
+    const changeInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(searchPackNameAC(e.currentTarget.value))
+    }
+
+    const setValuesRange = (newValuesRange: number[]) => {
+        dispatch(setMinMAxCardsCountAC(newValuesRange))
+    }
+
+    const search = () => {
+        dispatch(searchPackTC())
+    }
+
     if (!isLoggedIn) {
         return <Redirect to={LOGIN}/>
     }
@@ -93,7 +118,16 @@ const Packs = () => {
     return (
         <div className={classes.container}>
             {requestIsFetching && <Preloader/>}
-            <Search/>
+            <Search
+                inputLabel={'Search'}
+                setValuesRange={setValuesRange}
+                minValuesRange={minCardsCount}
+                maxValuesRange={maxCardsCount}
+                valueSearchName={valueSearchName}
+                changeInputSearch={changeInputSearch}
+                search={search}
+                secondInput={false}
+            />
             <h1>Packs </h1>
             <Checkbox onChange={changedMyPack} labelTitle={'My packs'}/>
             {/* start ADD NEW PACK */}
@@ -111,10 +145,15 @@ const Packs = () => {
             {/* end ADD NEW PACK */}
             <div className={classes.table}>
                 <div className={`${classes.tableHeader} ${classes.tableRow}`}>
-                    <div><strong>Name</strong><SortButton onClickOne={sortPacksNameTop}
-                                                          onClickTwo={sortPacksNameBottom}/></div>
+                    <div>
+                        <strong>Name</strong>
+                        <SortButton onClickOne={sortPacksNameTop} onClickTwo={sortPacksNameBottom}/>
+                    </div>
                     <div><strong>Cards Count</strong></div>
-                    <div><strong>Last Update</strong></div>
+                    <div>
+                        <strong>Last Update</strong>
+                        <SortButton onClickOne={sortPacksUpdateTop} onClickTwo={sortPacksUpdateBottom}/>
+                    </div>
                     <div><strong>Actions</strong></div>
                 </div>
 
