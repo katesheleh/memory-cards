@@ -9,10 +9,11 @@ export const packAPI = {
     getCardPacksAll() {
         return instance.get<CardsPackResponseType>(`cards/pack`)
     },
-    addCardPack(name: string) {
+    addCardPack(name: string, privatePack: boolean) {
         return instance.post<NewCardsPackResponseType>(`cards/pack`, {
             cardsPack: {
-                name: name
+                name: name,
+                private: privatePack
             }
         })
     },
