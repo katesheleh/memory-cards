@@ -111,9 +111,9 @@ export const removePackTC = (_id: string, user_id: string) => (dispatch: Dispatc
         })
 }
 
-export const addPackTC = (name: string, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const addPackTC = (name: string, privatePack: boolean, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
-    packAPI.addCardPack(name)
+    packAPI.addCardPack(name, privatePack)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(addPackAC(res.data.newCardsPack))
