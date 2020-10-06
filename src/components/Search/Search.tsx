@@ -1,31 +1,34 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import classes from './Search.module.scss'
 import Input from "../common/Input/Input";
 import Button from "../common/Button/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../reducers/store";
-import {searchPackNameAC, searchPackTC} from "../../reducers/pack-reducer";
 import CardsCountRange from "../common/Range/Range";
 
-export const Search = () => {
-    const dispatch = useDispatch()
-    const setSearchName = (newSearchName: string) => (
-        dispatch(searchPackNameAC(newSearchName))
-    )
-    const value = useSelector((state: AppRootStateType) => state.packs.packName)
-    const changeInputValue = (e: any) => {
-        setSearchName(e.currentTarget.value)
-    }
+type SearchPropsType = {
+    inputLabel: string
+    setValuesRange: (newValuesRange: number[]) => void
+    minValuesRange: number
+    maxValuesRange: number
+    valueSearchName: string
+    changeInputSearch: (e: ChangeEvent<HTMLInputElement>) => void
+    search: () => void
+    secondInput?: boolean
+    secondInputLabel?: string
+    valueSecondSearchName?: string
+    changeSecondInputSearch?: (e: ChangeEvent<HTMLInputElement>) => void
+}
 
-
-    const search = () => {
-        dispatch(searchPackTC())
-    }
+export const Search = ({inputLabel, setValuesRange, minValuesRange, maxValuesRange, valueSearchName, changeInputSearch, search, secondInput = false, ...props}: SearchPropsType) => {
     return (
         <div className={classes.search}>
-            <CardsCountRange/>
+            <CardsCountRange setValuesRange={setValuesRange} minValuesRange={minValuesRange}
+                             maxValuesRange={maxValuesRange}/>
             <div className={classes.search_item}>
-                <Input labelTitle={'Search'} value={value} onChange={changeInputValue}/>
+                <Input labelTitle={inputLabel} value={valueSearchName} onChange={changeInputSearch}/>
+                {secondInput &&
+                <Input labelTitle={props.secondInputLabel}
+                       value={props.valueSecondSearchName}
+                       onChange={props.changeSecondInputSearch}/>}
                 <Button labelTitle={'Search'} onClick={search}/>
             </div>
         </div>

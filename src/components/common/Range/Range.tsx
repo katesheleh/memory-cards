@@ -1,31 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {Range, getTrackBackground} from 'react-range';
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../../reducers/store";
-import {setMinMAxCardsCountAC} from "../../../reducers/pack-reducer";
+import {getTrackBackground, Range} from 'react-range';
 
-const CardsCountRange: React.FC = () => {
-    const  minCardsCount = useSelector((state: AppRootStateType) => state.packs.minCardsCount)
-    const  maxCardsCount = useSelector((state: AppRootStateType) => state.packs.maxCardsCount)
-    const [values, setValues] = useState([minCardsCount, maxCardsCount]);
+type RangePropsType = {
+    setValuesRange: (newValuesRange: any) => void
+    minValuesRange: number
+    maxValuesRange: number
+}
 
-    const dispatch = useDispatch();
+const CardsCountRange = ({setValuesRange, minValuesRange, maxValuesRange}: RangePropsType) => {
+    const [values, setValues] = useState([minValuesRange, maxValuesRange]);
 
     const setValuesCardsCount = (newValues: number[]) => {
-        dispatch(setMinMAxCardsCountAC(newValues));
+        setValuesRange(newValues);
         setValues(newValues);
     };
 
     useEffect(() => {
-        setValuesCardsCount([minCardsCount, maxCardsCount]);
-    }, [minCardsCount, maxCardsCount]);
+        setValuesCardsCount([minValuesRange, maxValuesRange]);
+    }, [minValuesRange, maxValuesRange]);
 
     return (
         <Range
             values={values}
             step={1}
-            min={minCardsCount}
-            max={maxCardsCount}
+            min={minValuesRange}
+            max={maxValuesRange}
             onChange={values => (setValuesCardsCount(values))}
             renderTrack={({props, children}) => (
                 <div
@@ -48,8 +47,8 @@ const CardsCountRange: React.FC = () => {
                             background: getTrackBackground({
                                 values: values,
                                 colors: ['#ccc', '#499c35', '#ccc'],
-                                min: minCardsCount,
-                                max: maxCardsCount
+                                min: minValuesRange,
+                                max: maxValuesRange
                             }),
                             alignSelf: 'center'
                         }}
