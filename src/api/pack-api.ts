@@ -3,10 +3,17 @@ import {EditCardPackType} from "../reducers/pack-reducer";
 
 
 export const packAPI = {
-    addCardPack(name: string) {
+    getCardPacksUser(user_id: string) {
+        return instance.get<CardsPackResponseType>(`cards/pack?user_id=${user_id}`)
+    },
+    getCardPacksAll() {
+        return instance.get<CardsPackResponseType>(`cards/pack`)
+    },
+    addCardPack(name: string, privatePack: boolean) {
         return instance.post<NewCardsPackResponseType>(`cards/pack`, {
             cardsPack: {
-                name: name
+                name: name,
+                private: privatePack
             }
         })
     },
@@ -23,7 +30,7 @@ export const packAPI = {
     removeCardPack(pack_id: string) {
         return instance.delete<CardsPackResponseType>(`cards/pack?id=${pack_id}`)
     },
-    getCardPacks(user_id?: string, searchName?: string, min?: number, max?: number, sortPacks?: string, page?: number, pageCount?: number) {
+    searchCardPacks(user_id?: string, searchName?: string, min?: number, max?: number, sortPacks?: string, page?: number, pageCount?: number) {
         return instance.get<CardsPackResponseType>(`cards/pack`
             + (user_id? `?user_id=${user_id}` : '?')
             + (searchName? `?packName=${searchName}` : '')
