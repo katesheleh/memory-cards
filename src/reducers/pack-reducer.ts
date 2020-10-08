@@ -71,39 +71,14 @@ export const setCardPacksTotalCountAC = (cardPacksTotalCount: number) => ({
 } as const)
 
 // thunks
-export const getPackTC = (user_id?: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
-    dispatch(isFetchingAC(true))
-    if (user_id) {
-        packAPI.getCardPacksUser(user_id)
-            .then(res => {
-                dispatch(isFetchingAC(false))
-                dispatch(setPacksAC(res.data.cardPacks))
-                dispatch(setCardPacksTotalCountAC(res.data.cardPacksTotalCount))
-            })
-            .catch((error) => {
-                //dispatch(errorAC(error.response.data.error))
-                dispatch(isFetchingAC(false))
-            })
-    }
-    packAPI.getCardPacksAll()
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            dispatch(setPacksAC(res.data.cardPacks))
-            dispatch(setCardPacksTotalCountAC(res.data.cardPacksTotalCount))
-        })
-        .catch((error) => {
-            //dispatch(errorAC(error.response.data.error))
-            dispatch(isFetchingAC(false))
-        })
-}
 
-export const removePackTC = (_id: string, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const removePackTC = (_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
     packAPI.removeCardPack(_id)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(removePackAC(_id))
-            dispatch(getPackTC(user_id))
+            dispatch(getPackTC())
         })
         .catch((error) => {
             console.log(error.response.data.error)
@@ -111,13 +86,13 @@ export const removePackTC = (_id: string, user_id: string) => (dispatch: Dispatc
         })
 }
 
-export const addPackTC = (name: string, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const addPackTC = (name: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
     packAPI.addCardPack(name)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(addPackAC(res.data.newCardsPack))
-            dispatch(getPackTC(user_id))
+            dispatch(getPackTC())
         })
         .catch((error) => {
             console.log(error.response.data.error)
@@ -125,13 +100,13 @@ export const addPackTC = (name: string, user_id: string) => (dispatch: Dispatch<
         })
 }
 
-export const editPackTC = (pack_id: string, model: EditCardPackType, user_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const editPackTC = (pack_id: string, model: EditCardPackType) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
     packAPI.editCardPack(pack_id, model)
         .then(res => {
             dispatch(isFetchingAC(false))
             editPackAC(pack_id, model)
-            dispatch(getPackTC(user_id))
+            dispatch(getPackTC())
         })
         .catch((error) => {
             console.log(error.response.data.error)
@@ -139,11 +114,11 @@ export const editPackTC = (pack_id: string, model: EditCardPackType, user_id: st
         })
 }
 
-export const searchPackTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>, getState: () => AppRootStateType) => {
+export const getPackTC = () => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>, getState: () => AppRootStateType) => {
     const {packName, myPacks, min, max, sortPacks, page, pageCount} = getState().packs
     const user_id = myPacks ? getState().login.profile._id : undefined
     dispatch(isFetchingAC(true))
-    packAPI.searchCardPacks(user_id ,packName, min, max, sortPacks, page, pageCount)
+    packAPI.getCardPacks(user_id ,packName, min, max, sortPacks, page, pageCount)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(setPacksAC(res.data.cardPacks))

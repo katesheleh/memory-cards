@@ -2,8 +2,17 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {
-    addPackTC, EditCardPackType, editPackTC, getPackTC, removePackTC, searchPackNameAC,
-    searchPackTC, setMinMAxCardsCountAC, setMyPacksAC, setPageAC, setPageCountAC, setSortPacksAC
+    addPackTC,
+    EditCardPackType,
+    editPackTC,
+    getPackTC,
+    removePackTC,
+    searchPackNameAC,
+    setMinMAxCardsCountAC,
+    setMyPacksAC,
+    setPageAC,
+    setPageCountAC,
+    setSortPacksAC
 } from "../../reducers/pack-reducer";
 import Button from "../common/Button/Button";
 import {CardsPackType} from "../../api/pack-api";
@@ -50,17 +59,17 @@ const Packs = () => {
     }, [])
 
     const removePack = (_id: string) => {
-        dispatch(removePackTC(_id, user_id))
+        dispatch(removePackTC(_id))
         closeDelModal()
     }
 
     const addPack = (name: string) => {
-        dispatch(addPackTC(name, user_id))
+        dispatch(addPackTC(name))
         closeNewPackModal()
     }
 
     const editPack = (pack_id: string, model: EditCardPackType) => {
-        dispatch(editPackTC(pack_id, model, user_id))
+        dispatch(editPackTC(pack_id, model))
         closeEditModal()
     }
 
@@ -71,32 +80,32 @@ const Packs = () => {
     const getCardPacksPage = (page: number, pageCount: number) => {
         dispatch(setPageAC(page))
         dispatch(setPageCountAC(pageCount))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const changedMyPack = () => {
         dispatch(setMyPacksAC(!myPacks))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksNameTop = () => {
         dispatch(setSortPacksAC('1name'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksNameBottom = () => {
         dispatch(setSortPacksAC('0name'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksUpdateTop = () => {
         dispatch(setSortPacksAC('1updated'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksUpdateBottom = () => {
         dispatch(setSortPacksAC('0updated'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const changeInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +117,7 @@ const Packs = () => {
     }
 
     const search = () => {
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     if (!isLoggedIn) {
