@@ -1,10 +1,9 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import React, {ChangeEvent, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../reducers/store";
 import {
     getPackTC,
     searchPackNameAC,
-    searchPackTC,
     setMinMAxCardsCountAC,
     setMyPacksAC,
     setPageAC,
@@ -47,32 +46,32 @@ const Packs = () => {
     const getCardPacksPage = (page: number, pageCount: number) => {
         dispatch(setPageAC(page))
         dispatch(setPageCountAC(pageCount))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const changedMyPack = () => {
         dispatch(setMyPacksAC(!myPacks))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksNameTop = () => {
         dispatch(setSortPacksAC('1name'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksNameBottom = () => {
         dispatch(setSortPacksAC('0name'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksUpdateTop = () => {
         dispatch(setSortPacksAC('1updated'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const sortPacksUpdateBottom = () => {
         dispatch(setSortPacksAC('0updated'))
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     const changeInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +83,7 @@ const Packs = () => {
     }
 
     const search = () => {
-        dispatch(searchPackTC())
+        dispatch(getPackTC())
     }
 
     if (!isLoggedIn) {
