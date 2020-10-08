@@ -1,0 +1,19 @@
+@import "../../styles/variable";
+
+.container {
+  @extend %container;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.colLeft {
+  padding-right: 30px;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+  color: $color-accent;
+}
