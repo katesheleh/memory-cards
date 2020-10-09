@@ -77,7 +77,7 @@ const Train = () => {
             <div className={classes.front}>
                <h3 className={classes.cardTitle}>Question</h3>
                <span className={classes.cardText}>{card.question}</span>
-               <span>{card.grade}</span>
+               <div>Grade: {Math.floor(card.grade)}</div>
             </div>
             <div className={classes.back}>
                <h3 className={classes.cardTitle}>Answer</h3>
