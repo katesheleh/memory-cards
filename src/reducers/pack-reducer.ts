@@ -122,6 +122,7 @@ export const getPackTC = () => (dispatch: Dispatch<ActionsType | isFetchingACTyp
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(setPacksAC(res.data.cardPacks))
+            dispatch(setCardPacksTotalCountAC(res.data.cardPacksTotalCount))
         })
         .catch((error) => {
             //dispatch(errorAC(error.response.data.error))
