@@ -15,6 +15,10 @@
    perspective: 1000px;
    margin-bottom: 10px;
 
+   .cardContent {
+      overflow-y: auto;
+   }
+
    .front, .back {
       cursor: pointer;
       position: absolute;
@@ -22,7 +26,6 @@
       height: 100%;
       left: 0;
       top: 0;
-      padding: 10px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -33,6 +36,7 @@
       border: 3px solid $color-accent;
       box-shadow: 1px 1px 1px 1px rgba($color-accent, 0.3);
       background-color: rgba($color-accent, 0.05);
+      padding: 50px 10px 10px 10px;
 
       .cardTitle {
          position: absolute;
@@ -43,9 +47,9 @@
       }
 
       .cardText {
-         font-size: 20px;
+         padding: 10px 0;
+         display: block;
          font-weight: 500;
-         line-height: 25px;
       }
    }
 
@@ -66,9 +70,12 @@
       animation: rotate .5s ease-in-out infinite;
       background: $color-accent;
       color: $color-accent;
-      //background-image: url('../../assets/images/logo.png');
-      //background-repeat: no-repeat;
-      //background-position: center;
+      .cardText {
+         color: $color-accent;
+      }
+   }
+   .front.loading + .back {
+      display: none;
    }
 }
 
