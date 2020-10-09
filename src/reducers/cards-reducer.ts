@@ -63,9 +63,9 @@ export const setCardsPageAC = (page: number) => ({type: 'SET_CARDS_PAGE', page} 
 export const setCardsPageCountAC = (pageCount: number) => ({type: 'SET_CARDS_PAGE_COUNT', pageCount} as const)
 
 // thunks
-export const getCardsTC = (cardsPack_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
+export const getCardsTC = (cardsPack_id: string, pageCount?: number) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
     dispatch(isFetchingAC(true))
-    cardsAPI.getCards(cardsPack_id)
+    cardsAPI.getCards(cardsPack_id, pageCount)
         .then(res => {
             dispatch(isFetchingAC(false))
             dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))

@@ -4,8 +4,8 @@ import {CardsPackResponseType} from "./pack-api";
 
 
 export const cardsAPI = {
-    getCards(cardsPack_id: string) {
-        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}`)
+    getCards(cardsPack_id: string, pageCount?:number) {
+        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}${pageCount ? '&pageCount=' + pageCount : ''}`)
     },
     addCard(cardsPack_id: string, question: string, answer: string) {
         return instance.post<AddCardResponseType>(`cards/card`, {
