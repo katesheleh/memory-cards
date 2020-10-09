@@ -3,14 +3,20 @@ import classes from './Train.module.scss'
 import {useParams} from 'react-router-dom'
 import {Button} from '../common'
 import {useDispatch, useSelector} from 'react-redux'
-import {getCardsTC} from '../../reducers/cards-reducer'
+import {getCardsTC, putGradeCardTC} from '../../reducers/cards-reducer'
 import {CardsType} from '../../api/cards-api'
 import {AppRootStateType} from '../../reducers/store'
 
 const grades = [1, 2, 3, 4, 5]
 const chooseCard = (cards: CardsType[]) => {
-   let randID = Math.floor(Math.random() * cards.length)
-   return cards[randID]
+   const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
+   const rand = Math.random() * sum;
+   const res = cards.reduce((acc: { sum: number, id: number}, card, i) => {
+         const newSum = acc.sum + (6 - card.grade) * (6 - card.grade);
+         return {sum: newSum, id: newSum < rand ? i : acc.id}
+      }
+      , {sum: 0, id: -1});
+   return cards[res.id + 1];
 }
 
 const Train = () => {
@@ -54,6 +60,10 @@ const Train = () => {
       setCheck(false)
    }
 
+   const onClickGrade = (grade: number) => {
+      dispatch(putGradeCardTC(card._id, grade))
+   }
+
    return (
       <div className={classes.container}>
          <h1>Train</h1>
@@ -62,9 +72,11 @@ const Train = () => {
             <div className={classes.front}>
                <h3 className={classes.cardTitle}>Question</h3>
                <span className={classes.cardText}>{card.question}</span>
+               <span>{card.grade}</span>
             </div>
             <div className={classes.back}>
                <h3 className={classes.cardTitle}>Answer</h3>
+               <br/>
                <span className={classes.cardText}>{card.answer}</span>
             </div>
          </div>
@@ -73,7 +85,11 @@ const Train = () => {
             check && <div className={classes.actionMenu}>
                 <div className={classes.gradesBtnGroup}>
                    {
-                      grades.map(grad => <Button key={grad} labelTitle={grad.toString()}/>)
+                      grades.map(grade =>
+                         <Button key={grade}
+                                 labelTitle={grade.toString()}
+                                 onClick={() => onClickGrade(grade)}
+                         />)
                    }
                 </div>
                 <Button labelTitle={'Next'} onClick={onClickNext}/>

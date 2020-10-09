@@ -1,52 +1,54 @@
-import {Dispatch} from "redux";
-import {ErrorACType, isFetchingAC, isFetchingACType} from "./request-reducer";
-import {cardsAPI, CardsType, NewCardType} from "../api/cards-api";
-import {AppRootStateType} from "./store";
+import {Dispatch} from 'redux'
+import {ErrorACType, isFetchingAC, isFetchingACType} from './request-reducer'
+import {cardsAPI, CardsType, NewCardType} from '../api/cards-api'
+import {AppRootStateType} from './store'
 
 let initialState = {
-    cards: [] as CardsType[],
-    cardsTotalCount: 0,
-    cardsAnswer: '',
-    cardsQuestion: '',
-    min: 0,
-    max: 4,
-    sortCards: '',
-    maxGrade: 4,
-    minGrade: 0,
-    page: 1,
-    pageCount: 4
+   cards: [] as CardsType[],
+   cardsTotalCount: 0,
+   cardsAnswer: '',
+   cardsQuestion: '',
+   min: 0,
+   max: 4,
+   sortCards: '',
+   maxGrade: 4,
+   minGrade: 0,
+   page: 1,
+   pageCount: 4,
 }
 
 export const cardsReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'SET_CARDS':
-            return {...state, cards: action.cards}
-        case 'ADD_CARD':
-            return {...state, cards: [action.newCard, ...state.cards]}
-        case 'REMOVE_CARD':
-            return {...state, cards: state.cards.filter((c) => c._id != action._id)}
-        case 'EDIT_CARD':
-            return {
-                ...state,
-                cards: state.cards.map(p => p._id === action.card_id ? {...p, ...action.model} : p)
-            }
-        case 'SET_MIN_MAX_CARDS_GRADS':
-            return {...state, min: action.newValues[0], max: action.newValues[1]}
-        case 'SET_ANSWER_CARDS':
-            return {...state, cardsAnswer: action.cardsAnswer}
-        case 'SET_QUESTION_CARDS':
-            return {...state, cardsQuestion: action.cardsQuestion}
-        case 'SET_SORT_CARDS':
-            return {...state, sortCards: action.sortCards}
-        case 'SET_CARDS_TOTAL_CARDS':
-            return {...state, cardsTotalCount: action.cardsTotalCount}
-        case 'SET_CARDS_PAGE':
-            return {...state, page: action.page}
-        case 'SET_CARDS_PAGE_COUNT':
-            return {...state, pageCount: action.pageCount}
-        default:
-            return state;
-    }
+   switch (action.type) {
+      case 'SET_CARDS':
+         return {...state, cards: action.cards}
+      case 'ADD_CARD':
+         return {...state, cards: [action.newCard, ...state.cards]}
+      case 'REMOVE_CARD':
+         return {...state, cards: state.cards.filter((c) => c._id != action._id)}
+      case 'EDIT_CARD':
+         return {
+            ...state,
+            cards: state.cards.map(p => p._id === action.card_id ? {...p, ...action.model} : p),
+         }
+      case 'SET_MIN_MAX_CARDS_GRADS':
+         return {...state, min: action.newValues[0], max: action.newValues[1]}
+      case 'SET_ANSWER_CARDS':
+         return {...state, cardsAnswer: action.cardsAnswer}
+      case 'SET_QUESTION_CARDS':
+         return {...state, cardsQuestion: action.cardsQuestion}
+      case 'SET_SORT_CARDS':
+         return {...state, sortCards: action.sortCards}
+      case 'SET_CARDS_TOTAL_CARDS':
+         return {...state, cardsTotalCount: action.cardsTotalCount}
+      case 'SET_CARDS_PAGE':
+         return {...state, page: action.page}
+      case 'SET_CARDS_PAGE_COUNT':
+         return {...state, pageCount: action.pageCount}
+      case 'UPDATE_CARD_GRADE':
+         return {...state, cards: state.cards.map(p => p._id === action.card_id ? {...p, grade: action.grade} : p),}
+      default:
+         return state
+   }
 }
 
 // AC
@@ -58,109 +60,128 @@ export const setMinMaxCardsGradsAC = (newValues: number[]) => ({type: 'SET_MIN_M
 export const setAnswerCardsAC = (cardsAnswer: string) => ({type: 'SET_ANSWER_CARDS', cardsAnswer} as const)
 export const setQuestionCardsAC = (cardsQuestion: string) => ({type: 'SET_QUESTION_CARDS', cardsQuestion} as const)
 export const setSortCardsAC = (sortCards: string) => ({type: 'SET_SORT_CARDS', sortCards} as const)
-export const setCardsTotalCountAC = (cardsTotalCount: number) => ({type: 'SET_CARDS_TOTAL_CARDS', cardsTotalCount} as const)
+export const setCardsTotalCountAC = (cardsTotalCount: number) => ({
+   type: 'SET_CARDS_TOTAL_CARDS',
+   cardsTotalCount,
+} as const)
 export const setCardsPageAC = (page: number) => ({type: 'SET_CARDS_PAGE', page} as const)
 export const setCardsPageCountAC = (pageCount: number) => ({type: 'SET_CARDS_PAGE_COUNT', pageCount} as const)
+export const updateCardGardeAC = (card_id: string, grade: number) => (
+   {type: 'UPDATE_CARD_GRADE', card_id, grade} as const)
+
 
 // thunks
 export const getCardsTC = (cardsPack_id: string, pageCount?: number) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
-    dispatch(isFetchingAC(true))
-    cardsAPI.getCards(cardsPack_id, pageCount)
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))
-            dispatch(setCardsAC(res.data.cards))
-        })
-        .catch((error) => {
-            //dispatch(errorAC(error.response.data.error))
-            dispatch(isFetchingAC(false))
-        })
+   dispatch(isFetchingAC(true))
+   cardsAPI.getCards(cardsPack_id, pageCount)
+      .then(res => {
+         dispatch(isFetchingAC(false))
+         dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))
+         dispatch(setCardsAC(res.data.cards))
+      })
+      .catch((error) => {
+         //dispatch(errorAC(error.response.data.error))
+         dispatch(isFetchingAC(false))
+      })
 }
 
 export const addCardTC = (cardsPack_id: string, question: string, answer: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
-    dispatch(isFetchingAC(true))
-    cardsAPI.addCard(cardsPack_id, question, answer)
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            dispatch(addCardAC(res.data.newCard))
-            dispatch(getCardsTC(cardsPack_id))
-        })
-        .catch((error) => {
-            console.log(error.response.data.error)
-            dispatch(isFetchingAC(false))
-        })
+   dispatch(isFetchingAC(true))
+   cardsAPI.addCard(cardsPack_id, question, answer)
+      .then(res => {
+         dispatch(isFetchingAC(false))
+         dispatch(addCardAC(res.data.newCard))
+         dispatch(getCardsTC(cardsPack_id))
+      })
+      .catch((error) => {
+         console.log(error.response.data.error)
+         dispatch(isFetchingAC(false))
+      })
 }
 
 export const removeCardTC = (_id: string, cardsPack_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
-    dispatch(isFetchingAC(true))
-    cardsAPI.removeCard(_id)
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            dispatch(removeCardAC(_id))
-            dispatch(getCardsTC(cardsPack_id))
-        })
-        .catch((error) => {
-            console.log(error.response.data.error)
-            dispatch(isFetchingAC(false))
-        })
+   dispatch(isFetchingAC(true))
+   cardsAPI.removeCard(_id)
+      .then(res => {
+         dispatch(isFetchingAC(false))
+         dispatch(removeCardAC(_id))
+         dispatch(getCardsTC(cardsPack_id))
+      })
+      .catch((error) => {
+         console.log(error.response.data.error)
+         dispatch(isFetchingAC(false))
+      })
 }
 
 export const searchCardsTC = (cardsPack_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>, getState: () => AppRootStateType) => {
-    const {cardsAnswer, cardsQuestion, min, max, sortCards, page, pageCount} = getState().cards
-    dispatch(isFetchingAC(true))
-    cardsAPI.searchCards(cardsPack_id ,cardsAnswer, cardsQuestion, min, max, sortCards, page, pageCount)
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))
-            dispatch(setCardsAC(res.data.cards))
-        })
-        .catch((error) => {
-            //dispatch(errorAC(error.response.data.error))
-            dispatch(isFetchingAC(false))
-        })
+   const {cardsAnswer, cardsQuestion, min, max, sortCards, page, pageCount} = getState().cards
+   dispatch(isFetchingAC(true))
+   cardsAPI.searchCards(cardsPack_id, cardsAnswer, cardsQuestion, min, max, sortCards, page, pageCount)
+      .then(res => {
+         dispatch(isFetchingAC(false))
+         dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))
+         dispatch(setCardsAC(res.data.cards))
+      })
+      .catch((error) => {
+         //dispatch(errorAC(error.response.data.error))
+         dispatch(isFetchingAC(false))
+      })
 }
 
 export const editCardTC = (card_id: string, model: EditCardModelType, cardsPack_id: string) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
-    dispatch(isFetchingAC(true))
-    cardsAPI.editCard(card_id, model)
-        .then(res => {
-            dispatch(isFetchingAC(false))
-            editCardAC(card_id, model)
-            dispatch(getCardsTC(cardsPack_id))
-        })
-        .catch((error) => {
-            console.log(error.response.data.error)
-            dispatch(isFetchingAC(false))
-        })
+   dispatch(isFetchingAC(true))
+   cardsAPI.editCard(card_id, model)
+      .then(res => {
+         dispatch(isFetchingAC(false))
+         editCardAC(card_id, model)
+         dispatch(getCardsTC(cardsPack_id))
+      })
+      .catch((error) => {
+         console.log(error.response.data.error)
+         dispatch(isFetchingAC(false))
+      })
 }
 
+export const putGradeCardTC = (card_id: string, grade: number) =>
+   (dispatch: Dispatch) => {
+    cardsAPI.putGrade({card_id, grade})
+       .then(res => {
+          console.log(res.data)
+          dispatch(updateCardGardeAC(res.data.updatedGrade.card_id, res.data.updatedGrade.grade))
+       })
+       .catch((error) => {
+          console.log(error.response.data.error)
+          dispatch(isFetchingAC(false))
+       })
+   }
 
 type InitialStateType = {
-    cards: Array<CardsType>
-    cardsTotalCount: number
-    cardsAnswer: string
-    cardsQuestion: string
-    min: number
-    max: number
-    sortCards: string
-    maxGrade: number
-    minGrade: number
-    page: number
-    pageCount: number
+   cards: Array<CardsType>
+   cardsTotalCount: number
+   cardsAnswer: string
+   cardsQuestion: string
+   min: number
+   max: number
+   sortCards: string
+   maxGrade: number
+   minGrade: number
+   page: number
+   pageCount: number
 }
 
 type ActionsType =
-    setCardsACType
-    | addCardACType
-    | RemoveCardType
-    | setMinMaxCardsGradsACType
-    | setAnswerCardsACType
-    | setQuestionCardsACType
-    | setSortCardsACType
-    | setCardsTotalCountACType
-    | setCardsPageACType
-    | setCardsPageCountACType
-    | any
+   setCardsACType
+   | addCardACType
+   | RemoveCardType
+   | setMinMaxCardsGradsACType
+   | setAnswerCardsACType
+   | setQuestionCardsACType
+   | setSortCardsACType
+   | setCardsTotalCountACType
+   | setCardsPageACType
+   | setCardsPageCountACType
+   | updateCardGardeACType
+   | any
 
 
 export type setCardsACType = ReturnType<typeof setCardsAC>
@@ -173,11 +194,12 @@ export type setSortCardsACType = ReturnType<typeof setSortCardsAC>
 export type setCardsTotalCountACType = ReturnType<typeof setCardsTotalCountAC>
 export type setCardsPageACType = ReturnType<typeof setCardsPageAC>
 export type setCardsPageCountACType = ReturnType<typeof setCardsPageCountAC>
+export type updateCardGardeACType = ReturnType<typeof updateCardGardeAC>
 
 
 export type EditCardModelType = {
-    question?: string
-    answer?: string
+   question?: string
+   answer?: string
 }
 
 
