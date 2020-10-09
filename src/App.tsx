@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from "./reducers/store";
 import {authSucessTC} from './reducers/login-reducer'
 import {Preloader} from './components/common'
+import Train from './components/Train/Train'
 
 const Registration = React.lazy(() => import('./components/Registration/Registration'))
 const RestorePassword = React.lazy(() => import('./components/RestorePassword/RestorePassword'))
@@ -38,6 +39,7 @@ function App() {
                         <Route path={paths.PROFILE} render={() => <Profile/>}/>
                         <Route path={paths.PACKS} render={() => <Packs/>}/>
                         <Route path={paths.CARDS} render={() => <Cards/>}/>
+                        <Route path={paths.TRAIN} render={() => <Train/>}/>
 
                         <Route path={paths.REGISTRATION} render={() => <Registration/>}/>
                         <Route path={paths.RESTORE_PASSWORD} render={() => <RestorePassword/>}/>

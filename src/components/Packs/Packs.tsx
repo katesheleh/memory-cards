@@ -137,6 +137,7 @@ const Packs = () => {
 
                                 </>}
                                 <Link to={`/cards/${pack._id}`}><Button labelTitle={'Show cards'}/></Link>
+                                <Link to={`/train/${pack._id}`}><Button labelTitle={'Start train'}/></Link>
                             </div>
                         </div>
                     )

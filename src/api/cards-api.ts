@@ -4,8 +4,8 @@ import {CardsPackResponseType} from "./pack-api";
 
 
 export const cardsAPI = {
-    getCards(cardsPack_id: string) {
-        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}`)
+    getCards(cardsPack_id: string, pageCount?:number) {
+        return instance.get<CardsResponseType>(`cards/card?cardsPack_id=${cardsPack_id}${pageCount ? '&pageCount=' + pageCount : ''}`)
     },
     addCard(cardsPack_id: string, question: string, answer: string) {
         return instance.post<AddCardResponseType>(`cards/card`, {
@@ -34,6 +34,10 @@ export const cardsAPI = {
             + (page ? `&page=${page}` : '')
             + (pageCount ? `&pageCount=${pageCount}` : '')
         )
+    },
+
+    putGrade(data: PutGradeParamsType) {
+        return instance.put<PutGradeResponseType>(`cards/grade`, data)
     }
 }
 
@@ -84,3 +88,18 @@ export type CardsType = {
     _id: string
 }
 
+export type PutGradeParamsType = {
+    grade: number
+    card_id: string
+}
+
+export type PutGradeResponseType = {
+    updatedGrade: {
+        _id: string
+        cardsPack_id: string
+        card_id: string
+        user_id: string
+        grade: number
+        shots: number
+    }
+}
