@@ -23,6 +23,7 @@ import SortButton from "../common/SortButton/SortButton";
 import ModalRemovePack from "./Modals/ModalRemovePack";
 import ModalEditPack from "./Modals/ModalEditPack";
 import ModalAddPack from "./Modals/ModalAddPack";
+import {authSucessTC} from "../../reducers/login-reducer";
 
 const Packs = () => {
     const requestIsFetching = useSelector<AppRootStateType, boolean>(state => state.request.isFetching)
@@ -41,7 +42,11 @@ const Packs = () => {
 
     useEffect(() => {
         dispatch(getPackTC())
+        if (!isLoggedIn) {
+            dispatch(authSucessTC())
+        }
     }, [])
+
 
     const getCardPacksPage = (page: number, pageCount: number) => {
         dispatch(setPageAC(page))

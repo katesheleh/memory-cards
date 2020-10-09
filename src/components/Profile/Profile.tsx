@@ -17,13 +17,9 @@ const Profile = () => {
 
     useEffect(() => {
         if (!isLoggedIn) {
-            handleAuth()
+            dispatch(authSucessTC())
         }
     }, [])
-
-    const handleAuth = async () => {
-        await dispatch(authSucessTC());
-    }
 
     const setLogOut = () => {
         dispatch(logoutTC())
