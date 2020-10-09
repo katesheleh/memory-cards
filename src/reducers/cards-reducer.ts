@@ -15,6 +15,7 @@ let initialState = {
    minGrade: 0,
    page: 1,
    pageCount: 4,
+   loadingTrainingCard: false
 }
 
 export const cardsReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -46,6 +47,8 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Act
          return {...state, pageCount: action.pageCount}
       case 'UPDATE_CARD_GRADE':
          return {...state, cards: state.cards.map(p => p._id === action.card_id ? {...p, grade: action.grade} : p),}
+      case 'SET_LOADING_TRAINING_CARD':
+         return {...state, loadingTrainingCard: action.value}
       default:
          return state
    }
@@ -66,9 +69,8 @@ export const setCardsTotalCountAC = (cardsTotalCount: number) => ({
 } as const)
 export const setCardsPageAC = (page: number) => ({type: 'SET_CARDS_PAGE', page} as const)
 export const setCardsPageCountAC = (pageCount: number) => ({type: 'SET_CARDS_PAGE_COUNT', pageCount} as const)
-export const updateCardGardeAC = (card_id: string, grade: number) => (
-   {type: 'UPDATE_CARD_GRADE', card_id, grade} as const)
-
+export const updateCardGardeAC = (card_id: string, grade: number) => ({type: 'UPDATE_CARD_GRADE', card_id, grade} as const)
+const setLoadingTrainingCard = (value: boolean) => ({type: 'SET_LOADING_TRAINING_CARD', value})
 
 // thunks
 export const getCardsTC = (cardsPack_id: string, pageCount?: number) => (dispatch: Dispatch<ActionsType | isFetchingACType | ErrorACType>) => {
@@ -144,15 +146,15 @@ export const editCardTC = (card_id: string, model: EditCardModelType, cardsPack_
 
 export const putGradeCardTC = (card_id: string, grade: number) =>
    (dispatch: Dispatch) => {
-      dispatch(isFetchingAC(true))
+      dispatch(setLoadingTrainingCard(true))
     cardsAPI.putGrade({card_id, grade})
        .then(res => {
           dispatch(updateCardGardeAC(res.data.updatedGrade.card_id, res.data.updatedGrade.grade))
-          dispatch(isFetchingAC(false))
+          dispatch(setLoadingTrainingCard(false))
        })
        .catch((error) => {
           console.log(error.response.data.error)
-          dispatch(isFetchingAC(false))
+          dispatch(setLoadingTrainingCard(false))
        })
    }
 
@@ -168,6 +170,7 @@ type InitialStateType = {
    minGrade: number
    page: number
    pageCount: number
+   loadingTrainingCard: boolean
 }
 
 type ActionsType =
@@ -182,6 +185,7 @@ type ActionsType =
    | setCardsPageACType
    | setCardsPageCountACType
    | updateCardGardeACType
+   | setLoadingTrainingCardACType
    | any
 
 
@@ -196,7 +200,7 @@ export type setCardsTotalCountACType = ReturnType<typeof setCardsTotalCountAC>
 export type setCardsPageACType = ReturnType<typeof setCardsPageAC>
 export type setCardsPageCountACType = ReturnType<typeof setCardsPageCountAC>
 export type updateCardGardeACType = ReturnType<typeof updateCardGardeAC>
-
+type setLoadingTrainingCardACType = ReturnType<typeof setLoadingTrainingCard>
 
 export type EditCardModelType = {
    question?: string

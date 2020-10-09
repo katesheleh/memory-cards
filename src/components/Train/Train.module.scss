@@ -60,6 +60,16 @@
    &.check .back {
       transform: rotateY(360deg);
    }
+
+   .front.loading {
+      transition: all 0s ease;
+      animation: rotate .5s ease-in-out infinite;
+      background: $color-accent;
+      color: $color-accent;
+      //background-image: url('../../assets/images/logo.png');
+      //background-repeat: no-repeat;
+      //background-position: center;
+   }
 }
 
 .gradesBtnGroup {
@@ -67,4 +77,11 @@
    align-items: center;
    justify-content: center;
    margin-bottom: 10px;
+}
+
+
+@keyframes rotate {
+   from {
+      transform: rotateY(360deg);
+   }
 }

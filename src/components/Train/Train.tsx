@@ -26,6 +26,7 @@ const Train = () => {
    const [check, setCheck] = React.useState<boolean>(false)
    const [initTrain, setInitTrain] = React.useState<boolean>(false)
    const cards = useSelector<AppRootStateType, CardsType[]>(state => state.cards.cards)
+   const loadingTrainingCard = useSelector<AppRootStateType, boolean>(state => state.cards.loadingTrainingCard)
    const [card, setCard] = React.useState<CardsType>({
          answer: '',
          question: '',
@@ -72,9 +73,8 @@ const Train = () => {
    return (
       <div className={classes.container}>
          <h1>Train</h1>
-
          <div className={`${classes.card} ${check ? classes.check : ''}`} onClick={onClickCheck}>
-            <div className={classes.front}>
+            <div className={`${classes.front} ${loadingTrainingCard ? classes.loading : ''}`}>
                <h3 className={classes.cardTitle}>Question</h3>
                <span className={classes.cardText}>{card.question}</span>
                <div>Grade: {Math.floor(card.grade)}</div>
