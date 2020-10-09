@@ -9,14 +9,14 @@ import {AppRootStateType} from '../../reducers/store'
 
 const grades = [1, 2, 3, 4, 5]
 const chooseCard = (cards: CardsType[]) => {
-   const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
-   const rand = Math.random() * sum;
-   const res = cards.reduce((acc: { sum: number, id: number}, card, i) => {
-         const newSum = acc.sum + (6 - card.grade) * (6 - card.grade);
+   const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0)
+   const rand = Math.random() * sum
+   const res = cards.reduce((acc: { sum: number, id: number }, card, i) => {
+         const newSum = acc.sum + (6 - card.grade) * (6 - card.grade)
          return {sum: newSum, id: newSum < rand ? i : acc.id}
       }
-      , {sum: 0, id: -1});
-   return cards[res.id + 1];
+      , {sum: 0, id: -1})
+   return cards[res.id + 1]
 }
 
 const Train = () => {
@@ -28,18 +28,18 @@ const Train = () => {
    const cards = useSelector<AppRootStateType, CardsType[]>(state => state.cards.cards)
    const loadingTrainingCard = useSelector<AppRootStateType, boolean>(state => state.cards.loadingTrainingCard)
    const [card, setCard] = React.useState<CardsType>({
-         answer: '',
-         question: '',
-         cardsPack_id: '',
-         grade: 0,
-         rating: 0,
-         shots: 0,
-         type: '',
-         user_id: '',
-         created: '',
-         updated: '',
-         __v: 0,
-         _id: '',
+      answer: '',
+      question: '',
+      cardsPack_id: '',
+      grade: 0,
+      rating: 0,
+      shots: 0,
+      type: '',
+      user_id: '',
+      created: '',
+      updated: '',
+      __v: 0,
+      _id: '',
    })
    const [grade, setGrade] = React.useState<number | null>(null)
 
@@ -76,13 +76,16 @@ const Train = () => {
          <div className={`${classes.card} ${check ? classes.check : ''}`} onClick={onClickCheck}>
             <div className={`${classes.front} ${loadingTrainingCard ? classes.loading : ''}`}>
                <h3 className={classes.cardTitle}>Question</h3>
-               <span className={classes.cardText}>{card.question}</span>
-               <div>Grade: {Math.floor(card.grade)}</div>
+               <div className={classes.cardContent}>
+                  <span className={classes.cardText}>{card.question}</span>
+                  {/*<div>Grade: {Math.floor(card.grade)}</div>*/}
+               </div>
             </div>
             <div className={classes.back}>
-               <h3 className={classes.cardTitle}>Answer</h3>
-               <br/>
-               <span className={classes.cardText}>{card.answer}</span>
+               <div className={classes.cardContent}>
+                  <h3 className={classes.cardTitle}>Answer</h3>
+                  <span className={classes.cardText}>{card.answer}</span>
+               </div>
             </div>
          </div>
 
