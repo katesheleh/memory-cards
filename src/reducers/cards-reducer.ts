@@ -144,10 +144,11 @@ export const editCardTC = (card_id: string, model: EditCardModelType, cardsPack_
 
 export const putGradeCardTC = (card_id: string, grade: number) =>
    (dispatch: Dispatch) => {
+      dispatch(isFetchingAC(true))
     cardsAPI.putGrade({card_id, grade})
        .then(res => {
-          console.log(res.data)
           dispatch(updateCardGardeAC(res.data.updatedGrade.card_id, res.data.updatedGrade.grade))
+          dispatch(isFetchingAC(false))
        })
        .catch((error) => {
           console.log(error.response.data.error)

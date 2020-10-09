@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import classes from './Train.module.scss'
 import {useParams} from 'react-router-dom'
 import {Button} from '../common'
@@ -40,6 +40,7 @@ const Train = () => {
          __v: 0,
          _id: '',
    })
+   const [grade, setGrade] = React.useState<number | null>(null)
 
    React.useEffect(() => {
       if (!initTrain) {
@@ -57,11 +58,15 @@ const Train = () => {
 
    const onClickNext = () => {
       setCard(chooseCard(cards))
-      setCheck(false)
+      if (grade !== null) {
+         dispatch(putGradeCardTC(card._id, grade))
+         setGrade(null)
+         setCheck(false)
+      }
    }
 
-   const onClickGrade = (grade: number) => {
-      dispatch(putGradeCardTC(card._id, grade))
+   const onClickGrade = (gradeBtn: number) => {
+      setGrade(gradeBtn)
    }
 
    return (
@@ -85,14 +90,15 @@ const Train = () => {
             check && <div className={classes.actionMenu}>
                 <div className={classes.gradesBtnGroup}>
                    {
-                      grades.map(grade =>
-                         <Button key={grade}
-                                 labelTitle={grade.toString()}
-                                 onClick={() => onClickGrade(grade)}
+                      grades.map(g =>
+                         <Button key={g}
+                                 labelTitle={g.toString()}
+                                 onClick={() => onClickGrade(g)}
+                                 style={{transform: g === grade ? 'scale(1.1)' : ''}}
                          />)
                    }
                 </div>
-                <Button labelTitle={'Next'} onClick={onClickNext}/>
+                <Button labelTitle={'Next'} onClick={onClickNext} disabled={grade === null}/>
             </div>
          }
 
